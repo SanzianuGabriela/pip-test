@@ -11,7 +11,8 @@ import main.KeyInput;
 public class Player extends Entity {
 	GamePanel gp;
 	KeyInput keyI;
-	public Player(GamePanel gp,KeyInput keyI){
+	public Player(GamePanel gp,KeyInput keyI,int x,int y,int width,int height){
+		super(x,y,width,height);
 		this.gp=gp;
 		this.keyI=keyI;
 		setDefaultValues();
@@ -19,10 +20,9 @@ public class Player extends Entity {
 		loadAnimations();
 	}
 	public void setDefaultValues(){
-		ground=560;
-		x=100;
+		ground=5*gp.tileSize;;
 		y=ground;
-		velosity=-30;
+		velosity=-20;
 		speed=8;
 		direction="stay";
 		gravity=1;
@@ -32,7 +32,7 @@ public class Player extends Entity {
 		animations=new BufferedImage[7][10];
 		for (int i = 0; i < animations.length; i++) {
 			for (int j = 0; j < animations[i].length; j++) {
-				animations[i][j]=img.getSubimage(j*96,i*96,96,96);
+				animations[i][j]=img.getSubimage((j*96),i*96,96,96);
 
 			}
 		}
@@ -54,7 +54,10 @@ public class Player extends Entity {
 		}
 	}
 	public void update(){
+		updateHitbox();
 		if (keyI.upPressed && y==ground) {
+			if (downStay)
+				velosity=(int) (velosity*1.5);
 			downStay=false;
 			inAir=true;
 		}
@@ -69,7 +72,7 @@ public class Player extends Entity {
 				direction="air";
 			if(y>=ground){
 				inAir=false;
-				velosity=-30;
+				velosity=-20;
 			}
 		}
 		if(keyI.leftPressed==true){
@@ -77,15 +80,23 @@ public class Player extends Entity {
 			lastDir="l";
 			if(!inAir)
 				direction="left";
-			x-=speed;
+			if(worldX==0 || x>gp.screenX)
+				x-=speed;
+			else
+				worldX-=speed;
 
 		}
 		if(keyI.rightPressed==true){
 			downStay=false;
+			System.out.println(gp.lastWorldX);
 			lastDir="r";
 			if(!inAir)
 				direction="right";
-			x+=speed;
+			if(x<gp.screenX || worldX==gp.lastWorldX)
+				x+=speed;
+			else
+				worldX+=speed;
+			System.out.println(x+" "+worldX);
 		}
 		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) {
 			if(!keyI.downPressed) {
@@ -102,9 +113,6 @@ public class Player extends Entity {
 		}
 	}
 	public void draw(Graphics2D g2){
-		//g2.setColor(Color.white);
-		//g2.fillRect(x, y, gp.tileSize, gp.tileSize);
-		System.out.println(direction + " " + downStay +" "+ stayCount);
 		BufferedImage image =null;
 		switch(direction){
 		case "up":
@@ -136,9 +144,6 @@ public class Player extends Entity {
 			image=animations[3][aniIndex];
 			break;
 		case "stay":
-			int i=0;
-			while(i <100*aniSpeed)
-				i++;
 			nrFrames=10;
 			AniUpdate(nrFrames);
 			if(lastDir=="r")
@@ -162,5 +167,6 @@ public class Player extends Entity {
 		}
 
 		g2.drawImage(image,x,y,gp.tileSize*3,gp.tileSize*3,null);
+		drawHitbox(g2);
 	}
 }

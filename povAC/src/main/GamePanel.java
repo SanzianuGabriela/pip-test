@@ -8,29 +8,40 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import Entity.Player;
+import tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
 	final int originalTileSize=32;
 	final int scale = 3;
 	public int tileSize= originalTileSize*scale;
 	
-	final int maxScreenCol=12;
-	final int maxScreenRow=9;
-	final int screenWidth = tileSize*maxScreenCol;
-	final int ScreenHeight =tileSize* maxScreenRow;
+	public int maxScreenCol=12;
+	public int maxScreenRow=9;
+	public final int ScreenWidth = tileSize*maxScreenCol;
+	public int ScreenHeight =tileSize* maxScreenRow;
+	
+	//WORLD
+	public int screenX=(int) (ScreenWidth/2-(1.5*tileSize));
+	public int maxWorldCol=24;
+	public int maxWorldRow=9;
+	public final int WorldWidth = tileSize*maxWorldCol;
+	public int WorldHeight =tileSize* maxWorldRow;
+	public int lastWorldX=WorldWidth-ScreenWidth;
 	
 	int FPS = 60;
 	
+	TileManager tileM= new TileManager(this);
 	KeyInput Kinput=new KeyInput();
 	Thread gameThread;
-	Player player = new Player(this,Kinput);
-	
-	int playerX=100;
-	int playerY=100;
+	int playerX=80;
+	int playerY=80;
 	int playerSpeed=5;
 	
+	
+	public Player player = new Player(this,Kinput,screenX,playerY,tileSize*2,(int)(tileSize*3));
+	
 	public GamePanel(){
-		this.setPreferredSize(new Dimension(screenWidth,ScreenHeight));
+		this.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		this.addKeyListener(Kinput);
@@ -68,6 +79,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2= (Graphics2D)g;
+		tileM.draw(g2);
 		player.draw(g2);
 		g2.dispose();
 	}
