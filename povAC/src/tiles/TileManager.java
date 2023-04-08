@@ -13,8 +13,8 @@ import main.GamePanel;
 
 public class TileManager {
 	GamePanel gp;
-	tiles[] tile;
-	int mapTileNum[][];
+	public tiles[] tile;
+	public int mapTileNum[][];
 	public TileManager(GamePanel gp) {
 		this.gp=gp;
 		tile =new tiles[10];
@@ -28,6 +28,7 @@ public class TileManager {
 			tile[0].image=ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
 			tile[1]=new tiles();
 			tile[1].image=ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
+			tile[1].collision=true;
 			tile[2]=new tiles();
 			tile[2].image=ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
 		} catch (IOException e) {
@@ -40,9 +41,9 @@ public class TileManager {
 			BufferedReader br= new BufferedReader(new InputStreamReader(is));
 			int col=0;
 			int row=0;
-			int maxWorldRow;
 			while(col<gp.maxWorldCol && row<gp.maxWorldRow) {
-				String line =br.readLine();
+				String line1 =br.readLine();
+				String line = line1.replace("\t"," ");
 				while(col<gp.maxWorldCol) {
 					String numbers[]=line.split(" ");
 					int num = Integer.parseInt(numbers[col]);
@@ -56,19 +57,19 @@ public class TileManager {
 			}
 			br.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	public void draw(Graphics2D g2) {
 		int Worldcol=0;
 		int Worldrow=0;
-
 		while(Worldcol <gp.maxWorldCol && Worldrow <gp.maxWorldRow) {
 			int tileNum = mapTileNum[Worldcol][Worldrow];
 			int worldX=Worldcol*gp.tileSize;
 			int worldY=Worldrow*gp.tileSize;
-			int screenX=worldX-gp.player.worldX;
+			int screenX=worldX-gp.player.x+gp.screenX;
 			int screenY=worldY;
+			
 			g2.drawImage(tile[tileNum].image,screenX,screenY,gp.tileSize,gp.tileSize,null);
 			Worldcol++;
 			if(Worldcol==gp.maxWorldCol) {

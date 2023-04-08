@@ -15,6 +15,7 @@ public abstract class Entity {
 	public String direction,lastDir;
 	int gravity,ground;
 	boolean inAir=false,downStay=false;
+	public boolean collisionOn=false;
 	public int spriteCounter=-5,velosity;
 	public int spriteNum=1;
 	public int aniTick,aniIndex, aniSpeed =10,nrFrames,stayCount;
@@ -29,7 +30,7 @@ public abstract class Entity {
 		initHitbox();
 	} 
 	public void initHitbox() {
-		hitbox=new Rectangle(x,y,width/2,height);
+		hitbox=new Rectangle(x,y,width,height);
 
 	}
 	public void drawHitbox(Graphics g) {
@@ -37,25 +38,8 @@ public abstract class Entity {
 		g.drawRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
 	}
 	public void updateHitbox() {
-		if(downStay) {
-			hitbox.x=x+85;
-			hitbox.height=height/2;
-			hitbox.y=y+150;
-		}
-		else if(inAir) {
-			hitbox.x=x+85;
-			hitbox.y=y+45;
-			hitbox.height=height-100;
-			if(lastDir=="r")
-				hitbox.x=x+110;
-				
-		}
-		else {
-			hitbox.x=x+85;
-			hitbox.y=y+70;
-			hitbox.height=height-70;
-			hitbox.width=width/2;
-		}
+		hitbox.y=y+96;
+
 	}
 	public Rectangle getHitbox() {
 		return hitbox;

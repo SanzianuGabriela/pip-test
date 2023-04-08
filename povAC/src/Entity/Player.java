@@ -20,8 +20,9 @@ public class Player extends Entity {
 		loadAnimations();
 	}
 	public void setDefaultValues(){
-		ground=5*gp.tileSize;;
+		ground=10*gp.tileSize-1;
 		y=ground;
+		x=gp.screenX;
 		velosity=-20;
 		speed=8;
 		direction="stay";
@@ -80,23 +81,17 @@ public class Player extends Entity {
 			lastDir="l";
 			if(!inAir)
 				direction="left";
-			if(worldX==0 || x>gp.screenX)
+			if(!collisionOn)
 				x-=speed;
-			else
-				worldX-=speed;
-
+			
 		}
 		if(keyI.rightPressed==true){
 			downStay=false;
-			System.out.println(gp.lastWorldX);
 			lastDir="r";
 			if(!inAir)
 				direction="right";
-			if(x<gp.screenX || worldX==gp.lastWorldX)
+			if(!collisionOn)
 				x+=speed;
-			else
-				worldX+=speed;
-			System.out.println(x+" "+worldX);
 		}
 		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) {
 			if(!keyI.downPressed) {
@@ -111,6 +106,9 @@ public class Player extends Entity {
 			}
 
 		}
+		collisionOn=false;
+		gp.checkC.checkTile(this);
+		
 	}
 	public void draw(Graphics2D g2){
 		BufferedImage image =null;
@@ -165,8 +163,7 @@ public class Player extends Entity {
 				image=animations[6][aniIndex];
 			}
 		}
-
-		g2.drawImage(image,x,y,gp.tileSize*3,gp.tileSize*3,null);
+		g2.drawImage(image,gp.screenX,y,gp.tileSize*6,gp.tileSize*6,null);
 		drawHitbox(g2);
 	}
 }

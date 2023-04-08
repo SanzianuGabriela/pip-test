@@ -11,19 +11,19 @@ import Entity.Player;
 import tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
-	final int originalTileSize=32;
+	final int originalTileSize=16;
 	final int scale = 3;
 	public int tileSize= originalTileSize*scale;
 	
-	public int maxScreenCol=12;
-	public int maxScreenRow=9;
+	public int maxScreenCol=24;
+	public int maxScreenRow=18;
 	public final int ScreenWidth = tileSize*maxScreenCol;
 	public int ScreenHeight =tileSize* maxScreenRow;
 	
 	//WORLD
-	public int screenX=(int) (ScreenWidth/2-(1.5*tileSize));
-	public int maxWorldCol=24;
-	public int maxWorldRow=9;
+	public int screenX=(int) (ScreenWidth/2-(3*tileSize));
+	public int maxWorldCol=48;
+	public int maxWorldRow=18;
 	public final int WorldWidth = tileSize*maxWorldCol;
 	public int WorldHeight =tileSize* maxWorldRow;
 	public int lastWorldX=WorldWidth-ScreenWidth;
@@ -33,12 +33,13 @@ public class GamePanel extends JPanel implements Runnable {
 	TileManager tileM= new TileManager(this);
 	KeyInput Kinput=new KeyInput();
 	Thread gameThread;
-	int playerX=80;
-	int playerY=80;
+	public Collision checkC=new Collision(this);
+	int playerX=screenX+tileSize*2;
+	int playerY=0;
 	int playerSpeed=5;
 	
 	
-	public Player player = new Player(this,Kinput,screenX,playerY,tileSize*2,(int)(tileSize*3));
+	public Player player = new Player(this,Kinput,playerX,playerY,tileSize*2,tileSize*4);
 	
 	public GamePanel(){
 		this.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight));
