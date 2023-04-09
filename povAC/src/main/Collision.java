@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Color;
+
 import Entity.Entity;
 
 public class Collision {
@@ -10,52 +12,44 @@ public class Collision {
 	public void checkTile(Entity entity) {
 		int entityLeftWorldX=entity.x+2*gp.tileSize;
 		int entityRightWorldX=entity.x+entity.hitbox.width+2*gp.tileSize;
-		int entityTopWorldY=entity.y;
-		int entityBottomWorldY=entity.y+entity.hitbox.height;
+		int entityTopWorldY=entity.y+2*gp.tileSize;
+		if(entity.inAir) {
+			entityTopWorldY=entity.y+gp.tileSize;
+			}
+		int entityBottomWorldY=entity.y+entity.hitbox.height+2*gp.tileSize;
 		
 		int entityLeftCol=entityLeftWorldX/gp.tileSize;
 		int entityRightCol=entityRightWorldX/gp.tileSize;
 		int entityTopRow=entityTopWorldY/gp.tileSize;
 		int entityBottomRow=entityBottomWorldY/gp.tileSize;
-		int tileNum1,tileNum2;
-		switch(entity.direction) {
-		case"up":
-			entityTopRow=(entityTopWorldY -entity.speed)/gp.tileSize;
-			tileNum1=gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-			tileNum2=gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-			if(gp.tileM.tile[tileNum1].collision==true || gp.tileM.tile[tileNum2].collision==true){
-				entity.collisionOn=true;
-				System.out.println("Coliziune SUS");
+		int tileNum;
+		for (int i =entityLeftCol ; i < entityRightCol+1; i++) {
+			for (int j = entityTopRow; j < entityBottomRow+1; j++) {
+				if(j<18 && j>=0) {
+					tileNum=gp.tileM.mapTileNum[i][j];
+					if(gp.tileM.tile[tileNum].collision==true){
+						if(j==entityTopRow) {
+							entity.collisionUp=true;
+							System.out.println("Sus");
+						}
+						if(j==entityBottomRow) {
+							entity.collisionDown=true;
+							//System.out.println("Jos");
+						}
+						if(i==entityLeftCol && j!=entityBottomRow) {
+							entity.collisionLeft=true;
+							System.out.println("Stanga");
+						}
+						if(i==entityRightCol && j!=entityBottomRow) {
+							entity.collisionRight=true;
+							System.out.println("Dreapta");
+						}
+						
+
+					}
+				}
 			}
-			break;
-		case"fall":
-			tileNum1=gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-			tileNum2=gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-			if(gp.tileM.tile[tileNum1].collision==true || gp.tileM.tile[tileNum2].collision==true){
-				entity.collisionOn=true;
-				System.out.println("Coliziune JOS");
-			}
-			break;
-		case "left":
-			entityLeftCol=(entityLeftWorldX -entity.speed)/gp.tileSize;
-			tileNum1=gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-			tileNum2=gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-			if(gp.tileM.tile[tileNum1].collision==true || gp.tileM.tile[tileNum2].collision==true){
-				entity.collisionOn=true;
-				System.out.println("Coliziune Stanga");
-		
-			}
-			break;
-		case"right":
-			tileNum1=gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-			tileNum2=gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-			if(gp.tileM.tile[tileNum1].collision==true || gp.tileM.tile[tileNum2].collision==true){
-				entity.collisionOn=true;
-				System.out.println("Coliziune Dreapta");
-			}
-			break;
 		}
-		if(entity.collisionOn)
-			System.out.println("Colizion");
+		
 	}
 }

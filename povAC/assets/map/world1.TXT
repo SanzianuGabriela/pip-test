@@ -1,0 +1,20 @@
+if (keyI.upPressed && y==ground) {
+			if (downStay)
+				velosity=(int) (velosity*1.5);
+			downStay=false;
+			inAir=true;
+		}
+		if (inAir) {
+			velosity += gravity; 
+			y += velosity;
+			if(velosity<0)
+				direction="up";
+			else if(velosity>0)
+				direction="fall";
+			else
+				direction="air";
+			if(y>=ground){
+				inAir=false;
+				velosity=-20;
+			}
+		}

@@ -34,12 +34,12 @@ public class GamePanel extends JPanel implements Runnable {
 	KeyInput Kinput=new KeyInput();
 	Thread gameThread;
 	public Collision checkC=new Collision(this);
-	int playerX=screenX+tileSize*2;
-	int playerY=0;
+	int playerX=(int) (screenX+tileSize*2);
+	int playerY=2*tileSize;
 	int playerSpeed=5;
 	
 	
-	public Player player = new Player(this,Kinput,playerX,playerY,tileSize*2,tileSize*4);
+	public Player player = new Player(this,Kinput,playerX,playerY,(int) (tileSize*2),(int)(tileSize*4));
 	
 	public GamePanel(){
 		this.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight));

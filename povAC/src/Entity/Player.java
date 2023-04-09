@@ -6,11 +6,13 @@ import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
+import main.Collision;
 import main.GamePanel;
 import main.KeyInput;
 public class Player extends Entity {
 	GamePanel gp;
 	KeyInput keyI;
+	Collision coll;
 	public Player(GamePanel gp,KeyInput keyI,int x,int y,int width,int height){
 		super(x,y,width,height);
 		this.gp=gp;
@@ -20,11 +22,11 @@ public class Player extends Entity {
 		loadAnimations();
 	}
 	public void setDefaultValues(){
-		ground=10*gp.tileSize-1;
+		ground=10*gp.tileSize;
 		y=ground;
 		x=gp.screenX;
-		velosity=-20;
-		speed=8;
+		velosity=0;
+		speed=12;
 		direction="stay";
 		gravity=1;
 		lastDir="r";
@@ -56,14 +58,18 @@ public class Player extends Entity {
 	}
 	public void update(){
 		updateHitbox();
-		if (keyI.upPressed && y==ground) {
+		if (keyI.upPressed && !inAir) {
+			velosity=-20;
 			if (downStay)
 				velosity=(int) (velosity*1.5);
 			downStay=false;
 			inAir=true;
 		}
+		if(!inAir)
+			velosity=0;
 		if (inAir) {
-			velosity += gravity; 
+			if(velosity<=20)
+				velosity += gravity;
 			y += velosity;
 			if(velosity<0)
 				direction="up";
@@ -71,26 +77,31 @@ public class Player extends Entity {
 				direction="fall";
 			else
 				direction="air";
-			if(y>=ground){
+			if(collisionDown) {
+				y=(y/gp.tileSize)*gp.tileSize;
 				inAir=false;
-				velosity=-20;
 			}
 		}
+		if(!collisionDown)
+			inAir=true;
+		if(collisionUp) {
+			velosity=5;
+			}
 		if(keyI.leftPressed==true){
 			downStay=false;
 			lastDir="l";
 			if(!inAir)
 				direction="left";
-			if(!collisionOn)
+			if(!collisionLeft)
 				x-=speed;
-			
+
 		}
 		if(keyI.rightPressed==true){
 			downStay=false;
 			lastDir="r";
 			if(!inAir)
 				direction="right";
-			if(!collisionOn)
+			if(!collisionRight)
 				x+=speed;
 		}
 		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) {
@@ -106,9 +117,12 @@ public class Player extends Entity {
 			}
 
 		}
-		collisionOn=false;
+		collisionUp=false;
+		collisionDown=false;
+		collisionLeft=false;
+		collisionRight=false;
 		gp.checkC.checkTile(this);
-		
+
 	}
 	public void draw(Graphics2D g2){
 		BufferedImage image =null;
@@ -165,5 +179,6 @@ public class Player extends Entity {
 		}
 		g2.drawImage(image,gp.screenX,y,gp.tileSize*6,gp.tileSize*6,null);
 		drawHitbox(g2);
+		drawPoints(g2);
 	}
 }

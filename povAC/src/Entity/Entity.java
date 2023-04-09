@@ -13,9 +13,11 @@ public abstract class Entity {
 	public BufferedImage[][] animations;
 	public BufferedImage img;
 	public String direction,lastDir;
-	int gravity,ground;
-	boolean inAir=false,downStay=false;
-	public boolean collisionOn=false;
+	public int gravity;
+	int ground;
+	public boolean inAir=true;
+	boolean downStay=false;
+	public boolean collisionUp=false,collisionDown=false,collisionLeft=false,collisionRight=false;
 	public int spriteCounter=-5,velosity;
 	public int spriteNum=1;
 	public int aniTick,aniIndex, aniSpeed =10,nrFrames,stayCount;
@@ -37,8 +39,28 @@ public abstract class Entity {
 		g.setColor(Color.PINK);
 		g.drawRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
 	}
+	public void drawPoints(Graphics g) {
+		try {
+			int entityLeftCol=hitbox.x;
+			int entityRightCol=hitbox.x+hitbox.width;
+			int entityTopRow=hitbox.y;
+			int entityBottomRow=hitbox.y+hitbox.height;
+			for (int i =entityLeftCol ; i < entityRightCol+1; i+=48) {
+				for (int j = entityTopRow; j < entityBottomRow+1; j+=48) {
+					g.setColor(Color.RED);
+					g.drawRect(i-5,j-5,10,10);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	public void updateHitbox() {
 		hitbox.y=y+96;
+		if(inAir)
+			hitbox.y=y+48;
 
 	}
 	public Rectangle getHitbox() {
