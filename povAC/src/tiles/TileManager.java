@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
-import org.omg.CORBA.portable.InputStream;
+import java.io.InputStream;
 
 import main.GamePanel;
 
@@ -40,7 +40,7 @@ public class TileManager {
 	}
 	public void loadMap() {
 		try {
-			java.io.InputStream is=getClass().getResourceAsStream("/map/map.txt");
+			InputStream is=getClass().getResourceAsStream("/map/map.txt");
 			BufferedReader br= new BufferedReader(new InputStreamReader(is));
 			int col=0;
 			int row=0;
