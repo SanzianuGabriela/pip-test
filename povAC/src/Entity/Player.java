@@ -35,7 +35,7 @@ public class Player extends Entity {
 		animations=new BufferedImage[7][10];
 		for (int i = 0; i < animations.length; i++) {
 			for (int j = 0; j < animations[i].length; j++) {
-				animations[i][j]=img.getSubimage((j*96),i*96,96,96);
+				animations[i][j]=img.getSubimage(j*96,i*96,96,96);
 
 			}
 		}
@@ -51,7 +51,7 @@ public class Player extends Entity {
 	}
 	public void getPlayerImage(){
 		try {
-			img=ImageIO.read(getClass().getResource("/player/img.png"));
+			img=ImageIO.read(getClass().getResource("/player/img3.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
