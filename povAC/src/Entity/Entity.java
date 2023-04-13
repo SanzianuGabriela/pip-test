@@ -45,10 +45,10 @@ public abstract class Entity {
 			int entityRightCol=hitbox.x+hitbox.width;
 			int entityTopRow=hitbox.y;
 			int entityBottomRow=hitbox.y+hitbox.height;
-			for (int i =entityLeftCol ; i < entityRightCol+1; i+=48) {
-				for (int j = entityTopRow; j < entityBottomRow+1; j+=48) {
+			for (int i =entityLeftCol ; i < entityRightCol+1; i+=24) {
+				for (int j = entityTopRow; j < entityBottomRow+1; j+=24) {
 					g.setColor(Color.RED);
-					g.drawRect(i-5,j-5,10,10);
+					g.drawRect(i-3,j-3,6,6);
 				}
 			}
 			

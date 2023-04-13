@@ -68,7 +68,7 @@ public class Player extends Entity {
 		if(!inAir)
 			velosity=0;
 		if (inAir) {
-			if(velosity<=20)
+			if(velosity<=10)
 				velosity += gravity;
 			y += velosity;
 			if(velosity<0)
@@ -177,7 +177,7 @@ public class Player extends Entity {
 				image=animations[6][aniIndex];
 			}
 		}
-		g2.drawImage(image,gp.screenX,y,gp.tileSize*6,gp.tileSize*6,null);
+		g2.drawImage(image,gp.screenX,y,gp.tileSize*12,gp.tileSize*12,null);
 		drawHitbox(g2);
 		drawPoints(g2);
 	}
