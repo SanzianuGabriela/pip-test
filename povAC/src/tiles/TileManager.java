@@ -66,7 +66,7 @@ public class TileManager {
 	public void draw(Graphics2D g2) {
 		int Worldcol=0;
 		int Worldrow=0;
-		g2.drawImage(background,0-gp.player.x/2+gp.screenX-4*gp.tileSize,0,gp.WorldWidth/2,gp.WorldHeight,null);
+		g2.drawImage(background,0-(gp.player.x+gp.screenX)/3,0,gp.WorldWidth/2+2*gp.tileSize/2+12*gp.tileSize,gp.WorldHeight,null);
 		while(Worldcol <gp.maxWorldCol && Worldrow <gp.maxWorldRow) {
 			int tileNum = mapTileNum[Worldcol][Worldrow];
 			int worldX=Worldcol*gp.tileSize;

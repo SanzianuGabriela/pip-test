@@ -9,6 +9,7 @@ import main.GamePanel;
 
 public abstract class Entity {
 	GamePanel gp;
+	public int screenPX;
 	public int x,y,speed,worldX;
 	public BufferedImage[][] animations;
 	public BufferedImage img;
@@ -24,7 +25,8 @@ public abstract class Entity {
 	public Rectangle hitbox;
 
 	public int width,height;
-	public Entity(int x,int y,int width ,int height) {
+	public Entity(GamePanel gp,int x,int y,int width ,int height) {
+		this.gp=gp;
 		this.x=x;
 		this.y=y;
 		this.width=width;
@@ -45,8 +47,8 @@ public abstract class Entity {
 			int entityRightCol=hitbox.x+hitbox.width;
 			int entityTopRow=hitbox.y;
 			int entityBottomRow=hitbox.y+hitbox.height;
-			for (int i =entityLeftCol ; i < entityRightCol+1; i+=24) {
-				for (int j = entityTopRow; j < entityBottomRow+1; j+=24) {
+			for (int i =entityLeftCol ; i < entityRightCol+1; i+=gp.tileSize) {
+				for (int j = entityTopRow; j < entityBottomRow+1; j+=gp.tileSize) {
 					g.setColor(Color.RED);
 					g.drawRect(i-3,j-3,6,6);
 				}
@@ -58,9 +60,10 @@ public abstract class Entity {
 		
 	}
 	public void updateHitbox() {
-		hitbox.y=y+96;
+		hitbox.x=screenPX+4*gp.tileSize;
+		hitbox.y=y+4*gp.tileSize;
 		if(inAir)
-			hitbox.y=y+48;
+			hitbox.y=y+2*gp.tileSize;
 
 	}
 	public Rectangle getHitbox() {

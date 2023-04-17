@@ -2,7 +2,6 @@ package Entity;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
@@ -14,7 +13,7 @@ public class Player extends Entity {
 	KeyInput keyI;
 	Collision coll;
 	public Player(GamePanel gp,KeyInput keyI,int x,int y,int width,int height){
-		super(x,y,width,height);
+		super(gp,x,y,width,height);
 		this.gp=gp;
 		this.keyI=keyI;
 		setDefaultValues();
@@ -25,8 +24,9 @@ public class Player extends Entity {
 		ground=10*gp.tileSize;
 		y=ground;
 		x=gp.screenX;
+		screenPX=gp.screenX;
 		velosity=0;
-		speed=12;
+		speed=8;
 		direction="stay";
 		gravity=1;
 		lastDir="r";
@@ -68,7 +68,7 @@ public class Player extends Entity {
 		if(!inAir)
 			velosity=0;
 		if (inAir) {
-			if(velosity<=10)
+			if(velosity<=gp.tileSize/2-1)
 				velosity += gravity;
 			y += velosity;
 			if(velosity<0)
@@ -92,8 +92,13 @@ public class Player extends Entity {
 			lastDir="l";
 			if(!inAir)
 				direction="left";
-			if(!collisionLeft)
-				x-=speed;
+			if(!collisionLeft) {
+				if(x>gp.screenX && screenPX<=gp.screenX)
+					x-=speed;
+				else if(x==gp.WorldWidth-30*gp.tileSize || x==gp.screenX)
+					screenPX-=speed;
+			}		
+
 
 		}
 		if(keyI.rightPressed==true){
@@ -101,8 +106,13 @@ public class Player extends Entity {
 			lastDir="r";
 			if(!inAir)
 				direction="right";
-			if(!collisionRight)
-				x+=speed;
+			if(!collisionRight) {
+				if(screenPX==gp.screenX && x<gp.WorldWidth-30*gp.tileSize)
+					x+=speed;
+				else if(x==gp.WorldWidth-30*gp.tileSize || x==gp.screenX)
+					screenPX+=speed;
+			}		
+				
 		}
 		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) {
 			if(!keyI.downPressed) {
@@ -177,7 +187,7 @@ public class Player extends Entity {
 				image=animations[6][aniIndex];
 			}
 		}
-		g2.drawImage(image,gp.screenX,y,gp.tileSize*12,gp.tileSize*12,null);
+		g2.drawImage(image,screenPX,y,gp.tileSize*12,gp.tileSize*12,null);
 		drawHitbox(g2);
 		drawPoints(g2);
 	}
