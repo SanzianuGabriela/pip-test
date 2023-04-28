@@ -60,8 +60,6 @@ public class Player extends Entity {
 		updateHitbox();
 		if (keyI.upPressed && !inAir) {
 			velosity=-20;
-			if (downStay)
-				velosity=(int) (velosity*1.5);
 			downStay=false;
 			inAir=true;
 		}

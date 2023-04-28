@@ -33,7 +33,10 @@ public class TileManager {
 			tile[1].image=ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
 			tile[1].collision=true;
 			tile[2]=new tiles();
-			tile[2].image=ImageIO.read(getClass().getResourceAsStream("/tiles/water.png"));
+			tile[2].image=ImageIO.read(getClass().getResourceAsStream("/tiles/grass3.png"));
+			tile[3]=new tiles();
+			tile[3].image=ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -64,19 +67,26 @@ public class TileManager {
 		}
 	}
 	public void draw(Graphics2D g2) {
-		int Worldcol=0;
 		int Worldrow=0;
+		int PlayerCol=(int) (gp.player.x+3.5*gp.tileSize-gp.screenX+gp.player.screenPX)/gp.tileSize;
+		int startCol=PlayerCol-42,finCol=PlayerCol+47;
+		if(startCol<=0)
+			startCol=0;
+		if(finCol>=gp.maxWorldCol)
+			finCol=gp.maxWorldCol;
 		g2.drawImage(background,0-(gp.player.x+gp.screenX)/3,0,gp.WorldWidth/2+2*gp.tileSize/2+12*gp.tileSize,gp.WorldHeight,null);
-		while(Worldcol <gp.maxWorldCol && Worldrow <gp.maxWorldRow) {
-			int tileNum = mapTileNum[Worldcol][Worldrow];
-			int worldX=Worldcol*gp.tileSize;
+		while(startCol <finCol && Worldrow <gp.maxWorldRow) {
+			int tileNum = mapTileNum[startCol][Worldrow];
+			int worldX=startCol*gp.tileSize;
 			int worldY=Worldrow*gp.tileSize;
 			int screenX=worldX-gp.player.x+gp.screenX;
 			int screenY=worldY;
 			g2.drawImage(tile[tileNum].image,screenX,screenY,gp.tileSize,gp.tileSize,null);
-			Worldcol++;
-			if(Worldcol==gp.maxWorldCol) {
-				Worldcol=0;
+			startCol++;
+			if(startCol==finCol) {
+				startCol=PlayerCol-42;
+				if(startCol<=0)
+					startCol=0;
 				Worldrow++;
 			}
 		}

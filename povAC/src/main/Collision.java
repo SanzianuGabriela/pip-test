@@ -25,7 +25,7 @@ public class Collision {
 		int tileNum;
 		for (int i =entityLeftCol ; i < entityRightCol+1; i++) {
 			for (int j = entityTopRow; j < entityBottomRow+1; j++) {
-				if(j<36 && j>=0) {
+				if(j<gp.WorldWidth && j>=0) {
 					tileNum=gp.tileM.mapTileNum[i][j];
 					if(gp.tileM.tile[tileNum].collision==true){
 						if(j==entityTopRow) {
