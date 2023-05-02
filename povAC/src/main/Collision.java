@@ -10,6 +10,9 @@ public class Collision {
 		this.gp=gp;
 	}
 	public void checkTile(Entity entity) {
+		
+		//Determinarea coloanelor din standa si dreapata personajului , liniile de sus si jos a personajului 
+		
 		int entityLeftWorldX=(int) (entity.x+3.5*gp.tileSize-gp.screenX+entity.screenPX);
 		int entityRightWorldX=(int) (entityLeftWorldX+entity.hitbox.width+0.5*gp.tileSize);
 		int entityTopWorldY=entity.y+4*gp.tileSize;
@@ -23,6 +26,11 @@ public class Collision {
 		int entityTopRow=entityTopWorldY/gp.tileSize;
 		int entityBottomRow=entityBottomWorldY/gp.tileSize;
 		int tileNum;
+		
+		
+		//verifica toate punctele desenate in Enity si daca una din ea are coliziune cu un bloc care are collisionUp=true 
+		//atunci da semnal ca se realizeaza coliziunea si in Player.java nu permite deplasarea
+		
 		for (int i =entityLeftCol ; i < entityRightCol+1; i++) {
 			for (int j = entityTopRow; j < entityBottomRow+1; j++) {
 				if(j<gp.WorldWidth && j>=0) {

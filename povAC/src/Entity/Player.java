@@ -12,7 +12,7 @@ public class Player extends Entity {
 	GamePanel gp;
 	KeyInput keyI;
 	Collision coll;
-	public Player(GamePanel gp,KeyInput keyI,int x,int y,int width,int height){
+	public Player(GamePanel gp,KeyInput keyI,int x,int y,int width,int height){ //constructorul de baza 
 		super(gp,x,y,width,height);
 		this.gp=gp;
 		this.keyI=keyI;
@@ -20,7 +20,7 @@ public class Player extends Entity {
 		getPlayerImage();
 		loadAnimations();
 	}
-	public void setDefaultValues(){
+	public void setDefaultValues(){ // setarea unor caracteristici de baza bentru player
 		ground=10*gp.tileSize;
 		y=ground;
 		x=gp.screenX;
@@ -31,7 +31,7 @@ public class Player extends Entity {
 		gravity=1;
 		lastDir="r";
 	}
-	public void loadAnimations(){
+	public void loadAnimations(){ //realizeaza decuplarea animatiilor intr-un array din care in cele de urma va fi luate animatiile
 		animations=new BufferedImage[7][10];
 		for (int i = 0; i < animations.length; i++) {
 			for (int j = 0; j < animations[i].length; j++) {
@@ -40,7 +40,7 @@ public class Player extends Entity {
 			}
 		}
 	}
-	public void AniUpdate(int i){
+	public void AniUpdate(int i){ //ofera indexul animatiei cu un amumit delay
 		aniTick++;
 		if(aniTick >= aniSpeed){
 			aniTick = 0;
@@ -49,14 +49,14 @@ public class Player extends Entity {
 				aniIndex=0;
 		}
 	}
-	public void getPlayerImage(){
+	public void getPlayerImage(){ //preia asset-ul cu player
 		try {
 			img=ImageIO.read(getClass().getResource("/player/img3.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	public void update(){
+	public void update(){ //se realizeaza updatul la pozitia personajului
 		updateHitbox();
 		if (keyI.upPressed && !inAir) {
 			velosity=-20;
@@ -85,7 +85,7 @@ public class Player extends Entity {
 		if(collisionUp) {
 			velosity=5;
 			}
-		if(keyI.leftPressed==true){
+		if(keyI.leftPressed==true){ //deplasare stanga
 			downStay=false;
 			lastDir="l";
 			if(!inAir)
@@ -99,7 +99,7 @@ public class Player extends Entity {
 
 
 		}
-		if(keyI.rightPressed==true){
+		if(keyI.rightPressed==true){ //deplasare dreapta
 			downStay=false;
 			lastDir="r";
 			if(!inAir)
@@ -112,7 +112,7 @@ public class Player extends Entity {
 			}		
 				
 		}
-		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) {
+		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) { //stay/asezat
 			if(!keyI.downPressed) {
 				direction="stay";
 				if(downStay)
@@ -125,6 +125,7 @@ public class Player extends Entity {
 			}
 
 		}
+		//reseteaza coliziunea
 		collisionUp=false;
 		collisionDown=false;
 		collisionLeft=false;
@@ -132,7 +133,7 @@ public class Player extends Entity {
 		gp.checkC.checkTile(this);
 
 	}
-	public void draw(Graphics2D g2){
+	public void draw(Graphics2D g2){ //deseneaza animatiile din array-ul creat mai sus
 		BufferedImage image =null;
 		switch(direction){
 		case "up":

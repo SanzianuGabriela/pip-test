@@ -24,7 +24,7 @@ public class TileManager {
 		getTileImage();
 		loadMap();
 	}
-	public void getTileImage() {
+	public void getTileImage() { //prea toate imaginile necesare pentru background si tiles + le ofera niste caracteristici cum ar fi colision 
 		try {
 			background=ImageIO.read(getClass().getResource("/main/back.png"));
 			tile[0]=new tiles();
@@ -41,7 +41,7 @@ public class TileManager {
 			e.printStackTrace();
 		}
 	}
-	public void loadMap() {
+	public void loadMap() {//preia din map.txt array-ul cu indexuri 
 		try {
 			InputStream is=getClass().getResourceAsStream("/map/map.txt");
 			BufferedReader br= new BufferedReader(new InputStreamReader(is));
@@ -66,7 +66,7 @@ public class TileManager {
 			e.printStackTrace();
 		}
 	}
-	public void draw(Graphics2D g2) {
+	public void draw(Graphics2D g2) { //deseneaza tile-urile si mapa
 		int Worldrow=0;
 		int PlayerCol=(int) (gp.player.x+3.5*gp.tileSize-gp.screenX+gp.player.screenPX)/gp.tileSize;
 		int startCol=PlayerCol-42,finCol=PlayerCol+47;

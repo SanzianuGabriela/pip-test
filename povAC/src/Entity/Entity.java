@@ -7,7 +7,8 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 
-public abstract class Entity {
+public abstract class Entity { //clasa realizata pentru a pastra fi oferi niste trasanuri de baza pentru toate creaturile inclusiv Player
+							   //fiecare creatura mostenind-o
 	GamePanel gp;
 	public int screenPX;
 	public int x,y,speed,worldX;
@@ -25,7 +26,7 @@ public abstract class Entity {
 	public Rectangle hitbox;
 
 	public int width,height;
-	public Entity(GamePanel gp,int x,int y,int width ,int height) {
+	public Entity(GamePanel gp,int x,int y,int width ,int height) { //Constructor de baza se apeleaza la crearea Unei reaturi , ex:apelarea constructorului Player in GamePanel
 		this.gp=gp;
 		this.x=x;
 		this.y=y;
@@ -33,15 +34,17 @@ public abstract class Entity {
 		this.height=height;
 		initHitbox();
 	} 
-	public void initHitbox() {
+	public void initHitbox() { //creaza un dreptunghi in jurul personajului care va lucra ca hitbox
 		hitbox=new Rectangle(x,y,width,height);
 
 	}
-	public void drawHitbox(Graphics g) {
+	public void drawHitbox(Graphics g) { //deseneaza Hitboxul in jurul personajului pentru testarea codului 
 		g.setColor(Color.PINK);
 		g.drawRect(hitbox.x,hitbox.y,hitbox.width,hitbox.height);
 	}
-	public void drawPoints(Graphics g) {
+	public void drawPoints(Graphics g) { //deseneaza toate punctele care interactioneaza la coliaiune
+										 //codul in sine nu face nimik cu exceptia faptului ca deseneaza punctele 
+									     //ca sa poti vizual sa intelegi daca este contact sau nu cu blocul
 		try {
 			int entityLeftCol=hitbox.x;
 			int entityRightCol=hitbox.x+hitbox.width;
@@ -59,14 +62,14 @@ public abstract class Entity {
 		}
 		
 	}
-	public void updateHitbox() {
+	public void updateHitbox() { //face update la hitbox in dependenta cu amplasarea personajului
 		hitbox.x=screenPX+4*gp.tileSize;
 		hitbox.y=y+4*gp.tileSize;
 		if(inAir)
 			hitbox.y=y+2*gp.tileSize;
 
 	}
-	public Rectangle getHitbox() {
+	public Rectangle getHitbox() { //ar trebui sa fie un get momentan nu face nimic
 		return hitbox;
 	}
 

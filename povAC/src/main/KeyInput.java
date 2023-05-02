@@ -9,7 +9,7 @@ public class KeyInput implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent e) {}
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) { //Verifica daca butonul este apasat sau nu 
 		int code =e.getKeyCode();
 		if(code == KeyEvent.VK_W){
 			upPressed=true;
@@ -25,7 +25,7 @@ public class KeyInput implements KeyListener{
 		}
 	}
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent e) { //Verifica daca butonul nu e apasat
 		int code = e.getKeyCode();
 		if(code == KeyEvent.VK_W){
 			upPressed=false;

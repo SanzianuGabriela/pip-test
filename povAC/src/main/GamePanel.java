@@ -11,10 +11,14 @@ import Entity.Player;
 import tiles.TileManager;
 
 public class GamePanel extends JPanel implements Runnable {
+	
+	//Stabileste dimensiunea unui "pixel" de pe mapa
 	final int originalTileSize=8;
 	final int scale = 2;
 	public int tileSize= originalTileSize*scale;
 	
+	
+	//Dimensionile Ferestrei Jocului 
 	public int maxScreenCol=48;
 	public int maxScreenRow=36;
 	public final int ScreenWidth = tileSize*maxScreenCol;
@@ -34,12 +38,16 @@ public class GamePanel extends JPanel implements Runnable {
 	KeyInput Kinput=new KeyInput();
 	Thread gameThread;
 	public Collision checkC=new Collision(this);
+	
+	//marimile personajului
 	int playerX=(int) (screenX+tileSize*4);
 	int playerY=2*tileSize;
 	int playerSpeed=5;
 	
 	
 	public Player player = new Player(this,Kinput,playerX,playerY,(int) (tileSize*4),(int)(tileSize*8));
+	
+	
 	
 	public GamePanel(){
 		this.setPreferredSize(new Dimension(ScreenWidth,ScreenHeight));
@@ -49,12 +57,12 @@ public class GamePanel extends JPanel implements Runnable {
 		this.setFocusable(true);
 	
 	}
-	public void startGameThread(){
+	public void startGameThread(){//creatrea unui thread in care se va realiza joaca 
 		gameThread=new Thread(this);
 		gameThread.start();
 	}
 	@Override
-	public void run() {
+	public void run() { //realizraza updatarea la 60FPS
 		while(gameThread != null){
 			double drawInterval =1000000000/FPS;
 			double newDrawTime = System.nanoTime() +drawInterval;
@@ -74,14 +82,14 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 		
 	}
-	public void update(){
+	public void update(){ //realizeaza updatul
 		player.update();
 	}
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g){ //deseneaza totul in Window
 		super.paintComponent(g);
-		Graphics2D g2= (Graphics2D)g;
-		tileM.draw(g2);
-		player.draw(g2);
+		Graphics2D g2= (Graphics2D)g; 
+		tileM.draw(g2);  //deseneaza obstacolele "Mapa"
+		player.draw(g2); //deseneaza jucatorul
 		g2.dispose();
 	}
 
