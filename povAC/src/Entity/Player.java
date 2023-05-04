@@ -1,184 +1,214 @@
 package Entity;
-import java.awt.Graphics2D;
+
+import static Utils.Constants.PlayerConstants.*;
+import static Utils.HelpMethods.*;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Iterator;
 
-import javax.imageio.ImageIO;
+import main.Game;
+import Utils.LoadSave;
 
-import main.Collision;
-import main.GamePanel;
-import main.KeyInput;
 public class Player extends Entity {
-	GamePanel gp;
-	KeyInput keyI;
-	Collision coll;
-	public Player(GamePanel gp,KeyInput keyI,int x,int y,int width,int height){
-		super(x,y,width,height);
-		this.gp=gp;
-		this.keyI=keyI;
-		setDefaultValues();
-		getPlayerImage();
-		loadAnimations();
-	}
-	public void setDefaultValues(){
-		ground=10*gp.tileSize;
-		y=ground;
-		x=gp.screenX;
-		velosity=0;
-		speed=12;
-		direction="stay";
-		gravity=1;
-		lastDir="r";
-	}
-	public void loadAnimations(){
-		animations=new BufferedImage[7][10];
-		for (int i = 0; i < animations.length; i++) {
-			for (int j = 0; j < animations[i].length; j++) {
-				animations[i][j]=img.getSubimage(j*96,i*96,96,96);
+	private BufferedImage[][] animations;
+	private int aniTick, aniIndex, aniSpeed = 25;
+	private int playerAction = IDLE;
+	private boolean moving = false, attacking = false;
+	private boolean left, up, right, down, jump;
+	private float playerSpeed = 1.0f * Game.SCALE;
+	private int[][] lvlData;
+	private float xDrawOffset = 21 * Game.SCALE;
+	private float yDrawOffset = 4 * Game.SCALE;
 
-			}
-		}
+	// Jumping / Gravity
+	private float airSpeed = 0f;
+	private float gravity = 0.04f * Game.SCALE;
+	private float jumpSpeed = -2.25f * Game.SCALE;
+	private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
+	private boolean inAir = false;
+
+	public Player(float x, float y, int width, int height) {
+		super(x, y, width, height);
+		loadAnimations();
+		initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
+
 	}
-	public void AniUpdate(int i){
+
+	public void update() {
+		updatePos();
+		updateAnimationTick();
+		setAnimation();
+	}
+
+	public void render(Graphics g) {
+		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset), (int) (hitbox.y - yDrawOffset), width, height, null);
+//		drawHitbox(g);
+	}
+
+	private void updateAnimationTick() {
 		aniTick++;
-		if(aniTick >= aniSpeed){
+		if (aniTick >= aniSpeed) {
 			aniTick = 0;
 			aniIndex++;
-			if(aniIndex >=i)
-				aniIndex=0;
+			if (aniIndex >= GetSpriteAmount(playerAction)) {
+				aniIndex = 0;
+				attacking = false;
+			}
+
 		}
+
 	}
-	public void getPlayerImage(){
-		try {
-			img=ImageIO.read(getClass().getResource("/player/img3.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	public void update(){
-		updateHitbox();
-		if (keyI.upPressed && !inAir) {
-			velosity=-20;
-			if (downStay)
-				velosity=(int) (velosity*1.5);
-			downStay=false;
-			inAir=true;
-		}
-		if(!inAir)
-			velosity=0;
+
+	private void setAnimation() {
+		int startAni = playerAction;
+
+		if (moving)
+			playerAction = RUNNING;
+		else
+			playerAction = IDLE;
+
 		if (inAir) {
-			if(velosity<=10)
-				velosity += gravity;
-			y += velosity;
-			if(velosity<0)
-				direction="up";
-			else if(velosity>0)
-				direction="fall";
+			if (airSpeed < 0)
+				playerAction = JUMP;
 			else
-				direction="air";
-			if(collisionDown) {
-				y=(y/gp.tileSize)*gp.tileSize;
-				inAir=false;
-			}
+				playerAction = FALLING;
 		}
-		if(!collisionDown)
-			inAir=true;
-		if(collisionUp) {
-			velosity=5;
-			}
-		if(keyI.leftPressed==true){
-			downStay=false;
-			lastDir="l";
-			if(!inAir)
-				direction="left";
-			if(!collisionLeft)
-				x-=speed;
 
-		}
-		if(keyI.rightPressed==true){
-			downStay=false;
-			lastDir="r";
-			if(!inAir)
-				direction="right";
-			if(!collisionRight)
-				x+=speed;
-		}
-		if(!inAir && !keyI.rightPressed && !keyI.leftPressed) {
-			if(!keyI.downPressed) {
-				direction="stay";
-				if(downStay)
-					direction="down";
-			}
-			if(keyI.downPressed){
-				direction="down";
-				downStay=true;
-				stayCount++;
+		if (attacking)
+			playerAction = ATTACK_1;
+
+		if (startAni != playerAction)
+			resetAniTick();
+	}
+
+	private void resetAniTick() {
+		aniTick = 0;
+		aniIndex = 0;
+	}
+
+	private void updatePos() {
+		moving = false;
+
+		if (jump)
+			jump();
+		if (!left && !right && !inAir)
+			return;
+
+		float xSpeed = 0;
+
+		if (left)
+			xSpeed -= playerSpeed;
+		if (right)
+			xSpeed += playerSpeed;
+
+		if (!inAir)
+			if (!IsEntityOnFloor(hitbox, lvlData))
+				inAir = true;
+
+		if (inAir) {
+			if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
+				hitbox.y += airSpeed;
+				airSpeed += gravity;
+				updateXPos(xSpeed);
+			} else {
+				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+				if (airSpeed > 0)
+					resetInAir();
+				else
+					airSpeed = fallSpeedAfterCollision;
+				updateXPos(xSpeed);
 			}
 
-		}
-		collisionUp=false;
-		collisionDown=false;
-		collisionLeft=false;
-		collisionRight=false;
-		gp.checkC.checkTile(this);
+		} else
+			updateXPos(xSpeed);
+		moving = true;
+	}
+
+	private void jump() {
+		if (inAir)
+			return;
+		inAir = true;
+		airSpeed = jumpSpeed;
 
 	}
-	public void draw(Graphics2D g2){
-		BufferedImage image =null;
-		switch(direction){
-		case "up":
-			if(lastDir=="l")
-				image=animations[5][0];
-			if(lastDir=="r")
-				image=animations[4][0];
-			break;
-		case "fall":
-			if(lastDir=="l")
-				image=animations[5][2];
-			if(lastDir=="r")
-				image=animations[4][2];
-			break;
-		case "air":
-			if(lastDir=="l")
-				image=animations[5][1];
-			if(lastDir=="r")
-				image=animations[4][1];
-			break;
-		case "left":
-			nrFrames=8;
-			AniUpdate(nrFrames);
-			image=animations[2][aniIndex];
-			break;
-		case "right":
-			nrFrames=8;
-			AniUpdate(nrFrames);
-			image=animations[3][aniIndex];
-			break;
-		case "stay":
-			nrFrames=10;
-			AniUpdate(nrFrames);
-			if(lastDir=="r")
-				image=animations[0][aniIndex];
-			if(lastDir=="l")
-				image=animations[1][aniIndex];
-			break;
-		case "down":
-			if(downStay) {
-				image=animations[6][1];
-				if(keyI.downPressed) {
-					stayCount=0;
-					break;
-				}
-			}
-			else {
-				nrFrames=9;
-				AniUpdate(nrFrames);
-				image=animations[6][aniIndex];
-			}
-		}
-		g2.drawImage(image,gp.screenX,y,gp.tileSize*12,gp.tileSize*12,null);
-		drawHitbox(g2);
-		drawPoints(g2);
+
+	private void resetInAir() {
+		inAir = false;
+		airSpeed = 0;
+
 	}
+
+	private void updateXPos(float xSpeed) {
+		if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+			hitbox.x += xSpeed;
+		} else {
+			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
+		}
+
+	}
+
+	private void loadAnimations() {
+
+		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
+
+		animations = new BufferedImage[9][6];
+		for (int j = 0; j < animations.length; j++)
+			for (int i = 0; i < animations[j].length; i++)
+				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
+
+	}
+
+	public void loadLvlData(int[][] lvlData) {
+		this.lvlData = lvlData;
+		if (!IsEntityOnFloor(hitbox, lvlData))
+			inAir = true;
+
+	}
+
+	public void resetDirBooleans() {
+		left = false;
+		right = false;
+		up = false;
+		down = false;
+	}
+
+	public void setAttacking(boolean attacking) {
+		this.attacking = attacking;
+	}
+
+	public boolean isLeft() {
+		return left;
+	}
+
+	public void setLeft(boolean left) {
+		this.left = left;
+	}
+
+	public boolean isUp() {
+		return up;
+	}
+
+	public void setUp(boolean up) {
+		this.up = up;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
+
+	public void setRight(boolean right) {
+		this.right = right;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public void setDown(boolean down) {
+		this.down = down;
+	}
+
+	public void setJump(boolean jump) {
+		this.jump = jump;
+	}
+
 }

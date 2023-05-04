@@ -1,4 +1,4 @@
-package tiles;
+/*package tiles;
 
 import java.awt.image.BufferedImage;
 
@@ -7,3 +7,4 @@ public class tiles {
 	public boolean collision=false;
 	
 }
+*/
