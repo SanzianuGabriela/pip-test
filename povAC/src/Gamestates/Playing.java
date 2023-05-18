@@ -11,12 +11,12 @@ import UI.PauseButton;
 import UI.PauseOverlay;
 
 public class Playing extends State implements StateMethods {
-	private Player player;
+	
+	public static Player player;
 	private LevelManager levelManager;
 	private boolean paused = false;
 	private PauseOverlay pauseOverlay;
-
-
+	
 	public Playing(Game game) {
 		super(game);
 		initClasses();

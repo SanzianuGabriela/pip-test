@@ -3,15 +3,16 @@ package Levels;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import Gamestates.Playing;
 import main.Game;
 import Utils.LoadSave;
-
+import Entity.Player;
 public class LevelManager {
-
+	
 	private Game game;
 	private BufferedImage[] levelSprite;
 	private Level levelOne;
-
+	private BufferedImage back;
 	public LevelManager(Game game) {
 		this.game = game;
 		importOutsideSprites();
@@ -19,6 +20,7 @@ public class LevelManager {
 	}
 
 	private void importOutsideSprites() {
+		back=LoadSave.GetSpriteAtlas(LoadSave.BACKGROUND);
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
 		levelSprite = new BufferedImage[48];
 		for (int j = 0; j < 4; j++)
@@ -29,6 +31,13 @@ public class LevelManager {
 	}
 
 	public void draw(Graphics g) {
+		try {
+			g.drawImage(back,(int)(0-Playing.player.getHitbox().x)/3,0,Game.GAME_WIDTH,Game.GAME_HEIGHT,null);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (int j = 0; j < Game.TILES_IN_HEIGHT; j++)
 			for (int i = 0; i < Game.TILES_IN_WIDTH; i++) {
 				int index = levelOne.getSpriteIndex(i, j);
