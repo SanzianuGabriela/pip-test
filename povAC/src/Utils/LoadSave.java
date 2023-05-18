@@ -11,7 +11,7 @@ import main.Game;
 
 public class LoadSave {
 
-	public static final String PLAYER_ATLAS = "resources/player_sprites.png";
+	public static final String PLAYER_ATLAS = "resources/assets2.png";
 	public static final String LEVEL_ATLAS = "resources/outside_sprites.png";
 	public static final String LEVEL_ONE_DATA = "resources/level_one_data.png";
 	public static final String MENU_BUTTONS = "resources/button_atlas.png";
