@@ -10,8 +10,10 @@ public class HelpMethods {
 		if (!IsSolid(x, y, lvlData))
 			if (!IsSolid(x + width, y + height, lvlData))
 				if (!IsSolid(x + width, y, lvlData))
-					if (!IsSolid(x, y + height, lvlData))
-						return true;
+					if (!IsSolid(x + width, y+height/2, lvlData))
+						if (!IsSolid(x, y+height/2, lvlData))
+							if (!IsSolid(x, y + height, lvlData))
+								return true;
 		return false;
 	}
 
@@ -34,7 +36,7 @@ public class HelpMethods {
 		int currentTile = (int) (hitbox.x / Game.TILES_SIZE);
 		if (xSpeed > 0) {
 			// Right
-			int tileXPos = currentTile * Game.TILES_SIZE;
+			int tileXPos = (currentTile+(int)(hitbox.height / Game.TILES_SIZE) )* Game.TILES_SIZE;
 			int xOffset = (int) (Game.TILES_SIZE - hitbox.width);
 			return tileXPos + xOffset - 1;
 		} else
@@ -43,15 +45,16 @@ public class HelpMethods {
 	}
 
 	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
-		int currentTile = (int) (hitbox.y / Game.TILES_SIZE);
+		int currentTile_Down = (int) ((hitbox.y+hitbox.height) / Game.TILES_SIZE);
+		int currentTile_Up = (int) ((hitbox.y) / Game.TILES_SIZE);
 		if (airSpeed > 0) {
 			// Falling - touching floor
-			int tileYPos = currentTile * Game.TILES_SIZE;
+			int tileYPos = currentTile_Down * Game.TILES_SIZE;
 			int yOffset = (int) (Game.TILES_SIZE - hitbox.height);
 			return tileYPos + yOffset - 1;
 		} else
 			// Jumping
-			return currentTile * Game.TILES_SIZE;
+			return currentTile_Up * Game.TILES_SIZE;
 
 	}
 

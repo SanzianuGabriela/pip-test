@@ -6,7 +6,8 @@ import java.awt.geom.Rectangle2D;
 
 public abstract class Entity {
 
-	protected float x, y;
+	public float x;
+	protected float y;
 	protected int width, height;
 	protected Rectangle2D.Float hitbox;
 
@@ -29,10 +30,10 @@ public abstract class Entity {
 		hitbox = new Rectangle2D.Float(x, y, width, height);
 	}
 
-//	protected void updateHitbox() {
-//		hitbox.x = (int) x;
-//		hitbox.y = (int) y;
-//	}
+	//protected void updateHitbox() {
+		//hitbox.x = (int) x;
+		//hitbox.y = (int) y+40;
+		//}
 
 	public Rectangle2D.Float getHitbox() {
 		return hitbox;
