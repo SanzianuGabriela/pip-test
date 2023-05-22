@@ -19,6 +19,9 @@ public class Constants {
 		public static final int DOG_WIDTH = (int) (DOG_WIDTH_DEFAULT * Game.SCALE);
 		public static final int DOG_HEIGHT = (int) (DOG_HEIGHT_DEFAULT * Game.SCALE);
 
+		public static final int DOG_DRAWOFFSET_X = (int) (26 * Game.SCALE);
+		public static final int DOG_DRAWOFFSET_Y = (int) (9 * Game.SCALE);
+
 		public static int GetSpriteAmount(int enemy_type, int enemy_state) {
 
 			switch (enemy_type) {
@@ -38,6 +41,25 @@ public class Constants {
 			}
 
 			return 0;
+
+		}
+
+		public static int GetMaxHealth(int enemy_type) {
+			switch (enemy_type) {
+			case DOG:
+				return 10;
+			default:
+				return 1;
+			}
+		}
+
+		public static int GetEnemyDmg(int enemy_type) {
+			switch (enemy_type) {
+			case DOG:
+				return 15;
+			default:
+				return 0;
+			}
 
 		}
 
@@ -73,48 +95,40 @@ public class Constants {
 	}
 
 	public static class Directions {
-		public static final int JUMP = 0;
+		public static final int LEFT = 0;
 		public static final int UP = 1;
 		public static final int RIGHT = 2;
 		public static final int DOWN = 3;
 	}
 
 	public static class PlayerConstants {
-		public static final int IDLE_R = 1;
-		public static final int IDLE_L = 0;
-		public static final int RUNNING_R = 2;
-		public static final int RUNNING_L = 3;
-		public static final int JUMP_R= 4;
-		public static final int JUMP_L= 5;
-		public static final int AIR_R= 6;
-		public static final int AIR_L= 7;
-		public static final int FALL_R= 8;
-		public static final int FALL_L= 9;
+		public static final int IDLE = 0;
+		public static final int RUNNING = 1;
+		public static final int JUMP = 2;
+		public static final int FALLING = 3;
+		public static final int GROUND = 4;
+		public static final int HIT = 5;
+		public static final int ATTACK = 4;
+		private static final int DEAD = 6;
 
 		public static int GetSpriteAmount(int player_action) {
 			switch (player_action) {
-			case IDLE_R:
-				return 10;
-			case IDLE_L:
-				return 10;
-			case RUNNING_R:
+			
+			case DEAD:
 				return 8;
-			case RUNNING_L:
-				return 8;
-			case JUMP_R:
-				return 1;
-			case JUMP_L:
-				return 1;
-			case AIR_R:
-				return 1;
-			case AIR_L:
-				return 1;
-			case FALL_R:
-				return 1;
-			case FALL_L:
-				return 1;
+			case RUNNING:
+				return 6;
+			case IDLE:
+				return 5;
+			case HIT:
+				return 4;
+			case JUMP:
+			case ATTACK:
+				return 3;
+			
+			case FALLING:
 			default:
-				return 0;
+				return 1;
 			}
 		}
 	}
