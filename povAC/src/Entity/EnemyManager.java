@@ -56,11 +56,13 @@ public class EnemyManager {
 
 	
 	private void loadEnemyImgs() {
-		dogArr = new BufferedImage[5][9];
+		dogArr = new BufferedImage[5][6];
 		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.DOG_SPRITE);
 		for (int j = 0; j < dogArr.length; j++)
-			for (int i = 0; i < dogArr[j].length; i++)
+			for (int i = 0; i < dogArr[j].length; i++) {
 				dogArr[j][i] = temp.getSubimage(i * DOG_WIDTH_DEFAULT, j * DOG_HEIGHT_DEFAULT, DOG_WIDTH_DEFAULT, DOG_HEIGHT_DEFAULT);
+				System.out.println(i * DOG_WIDTH_DEFAULT+" "+j * DOG_HEIGHT_DEFAULT);
+			}
 	}
 
 	public void resetAllEnemies() {

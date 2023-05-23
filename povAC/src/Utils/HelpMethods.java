@@ -40,15 +40,15 @@ public class HelpMethods {
 
 
 	public static float GetEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
-		int currentTile = (int) (hitbox.x / Game.TILES_SIZE);
+		int currentTile_L = (int) (hitbox.x / Game.TILES_SIZE);
+		int currentTile_R = (int)	((hitbox.x+hitbox.width) / Game.TILES_SIZE);
 		if (xSpeed > 0) {
 			// Right
-			int tileXPos = currentTile * Game.TILES_SIZE;
-			int xOffset = (int) (Game.TILES_SIZE - hitbox.width);
-			return tileXPos + xOffset - 1;
+			int tileXPos = currentTile_R * Game.TILES_SIZE;
+			return tileXPos- 1;
 		} else
 			// Left
-			return currentTile * Game.TILES_SIZE;
+			return currentTile_L * Game.TILES_SIZE;
 	}
 
 	public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
@@ -67,7 +67,7 @@ public class HelpMethods {
 	public static boolean IsEntityOnFloor(Rectangle2D.Float hitbox, int[][] lvlData) {
 		// Check the pixel below bottomleft and bottomright
 		if (!IsSolid(hitbox.x, hitbox.y + hitbox.height + 1, lvlData))
-			if (!IsSolid(hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1, lvlData))
+			if (!IsSolid(hitbox.x + hitbox.width, hitbox.y  + hitbox.height + 1, lvlData))
 				return false;
 
 		return true;

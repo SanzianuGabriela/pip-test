@@ -7,14 +7,14 @@ public class Constants {
 	public static class EnemyConstants {
 		public static final int DOG= 0;
 
-		public static final int IDLE = 0;
-		public static final int RUNNING = 1;
+		public static final int IDLE = 1;
+		public static final int RUNNING = 0;
 		public static final int ATTACK = 2;
 		public static final int HIT = 3;
 		public static final int DEAD = 4;
 
-		public static final int DOG_WIDTH_DEFAULT = 72;
-		public static final int DOG_HEIGHT_DEFAULT = 32;
+		public static final int DOG_WIDTH_DEFAULT = 70;
+		public static final int DOG_HEIGHT_DEFAULT = 40;
 
 		public static final int DOG_WIDTH = (int) (DOG_WIDTH_DEFAULT * Game.SCALE);
 		public static final int DOG_HEIGHT = (int) (DOG_HEIGHT_DEFAULT * Game.SCALE);
@@ -28,15 +28,15 @@ public class Constants {
 			case DOG:
 				switch (enemy_state) {
 				case IDLE:
-					return 9;
+					return 4;
 				case RUNNING:
 					return 6;
 				case ATTACK:
-					return 7;
-				case HIT:
 					return 4;
+				case HIT:
+					return 2;
 				case DEAD:
-					return 5;
+					return 4;
 				}
 			}
 
@@ -115,18 +115,19 @@ public class Constants {
 			switch (player_action) {
 			
 			case DEAD:
-				return 8;
+				return 10;
 			case RUNNING:
-				return 6;
+				return 8;
 			case IDLE:
-				return 5;
+				return 10;
 			case HIT:
 				return 4;
 			case JUMP:
+				return 1;
 			case ATTACK:
-				return 3;
-			
+				return 8;
 			case FALLING:
+				return 1;
 			default:
 				return 1;
 			}

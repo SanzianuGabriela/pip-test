@@ -34,6 +34,7 @@ public class Dog extends Enemy {
 	}
 
 	private void updateAttackBox() {
+		initAttackBox();
 		attackBox.x = hitbox.x - attackBoxOffsetX;
 		attackBox.y = hitbox.y;
 
