@@ -143,10 +143,10 @@ public abstract class Enemy extends Entity {
 				case ATTACK:
 				case HIT:
 					enemyState = IDLE;
-					
+					break;
 				case DEAD:
 					active = false;
-					
+					break;
 				}
 			}
 		}
