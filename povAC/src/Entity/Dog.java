@@ -11,13 +11,18 @@ import static Utils.Constants.Directions.*;
 import Utils.HelpMethods.*;
 import Entity.Enemy;
 public class Dog extends Enemy {
+	
+	private static final int ATTACK_COOLDOWN = 60;
+    private int attackCooldown;
 
+	
 	public int attackBoxOffsetX;
 	public Rectangle2D.Float attackBox;
 
 	public Dog(float x, float y) {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT, DOG);
 		initHitbox(x, y, (int) (22 * Game.SCALE), (int) (19 * Game.SCALE));
+		attackCooldown = 0;
 
 	}
 
@@ -52,22 +57,26 @@ public class Dog extends Enemy {
 				newState(RUNNING);
 				break;
 			case RUNNING:
-				if (canSeePlayer(lvlData, player))
+				if (canSeePlayer(lvlData, player)) {
 					turnTowardsPlayer(player);
-				if (isPlayerCloseForAttack(player))
-					newState(ATTACK);
-
+					if (isPlayerCloseForAttack(player))
+						newState(ATTACK);
+				}
 				move(lvlData);
 				break;
 			case ATTACK:
 				if (aniIndex == 0)
 					attackChecked = false;
 
-				// Changed the name for checkEnemyHit to checkPlayerHit
-				if (aniIndex == 3 && !attackChecked)
-					checkPlayerHit(attackBox, player);
+				if (aniIndex == 3 && !attackChecked && attackCooldown <= 0) {
+	                checkPlayerHit(attackBox, player);
+	                attackCooldown = ATTACK_COOLDOWN;
+	            } else {
+	                attackCooldown--;
+	                
+	            }
 
-				break;
+	            break;
 			case HIT:
 				break;
 			}

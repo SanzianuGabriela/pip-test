@@ -47,7 +47,7 @@ public class Constants {
 		public static int GetMaxHealth(int enemy_type) {
 			switch (enemy_type) {
 			case DOG:
-				return 10;
+				return 15;
 			default:
 				return 1;
 			}
@@ -109,7 +109,7 @@ public class Constants {
 		public static final int GROUND = 4;
 		public static final int HIT = 5;
 		public static final int ATTACK = 4;
-		private static final int DEAD = 6;
+		public static final int DEAD = 6;
 
 		public static int GetSpriteAmount(int player_action) {
 			switch (player_action) {

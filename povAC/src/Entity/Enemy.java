@@ -32,7 +32,7 @@ public abstract class Enemy extends Entity {
 		this.enemyType = enemyType;
 		initHitbox(x, y, width, height);
 		maxHealth = GetMaxHealth(enemyType);
-		currentHealth = maxHealth;
+		currentHealth = 50;
 
 	}
 
@@ -143,10 +143,10 @@ public abstract class Enemy extends Entity {
 				case ATTACK:
 				case HIT:
 					enemyState = IDLE;
-					
+					break;
 				case DEAD:
 					active = false;
-					
+					break;
 				}
 			}
 		}
