@@ -159,44 +159,48 @@ public class Player extends Entity {
 
 
 	private void setAnimation() {
-		int startAni = playerAction;
+	    int startAni = playerAction;
 
-		if (moving)
-			playerAction = RUNNING;
-		else
-			playerAction = IDLE;
+	    if (moving) {
+	        playerAction = RUNNING;
+	    } else {
+	        playerAction = IDLE;
+	    }
 
-		if (inAir) {
-			if (airSpeed < 0)
-				playerAction = JUMP;
-			else
-				playerAction = FALLING;
-		}
+	    if (inAir) {
+	        if (airSpeed < 0) {
+	            playerAction = JUMP;
+	        } else {
+	            playerAction = FALLING;
+	        }
+	    }
 
-		if (attacking)
-		{playerAction = ATTACK;
-		if(startAni != ATTACK)
-		{
-			aniIndex = 1;
-			aniTick = 0;
-			return;
-		}
-		}
-		if(hit) {
-			playerAction=HIT;
-			if(aniIndex==3)
-				hit=false;
-		}
-		if(die) {
-			playerAction=DEAD;
-			if(aniIndex==9) {
-				die=false;
-				dead=true;
-			}
-		}
-		if (startAni != playerAction)
-			resetAniTick();
+	    if (attacking) {
+	        playerAction = ATTACK;
+	    }
+
+	    if (hit && !die) {
+	        playerAction = HIT;
+	        if (aniIndex == 3) {
+	            hit = false;
+	            return;
+	        }
+	    }
+
+	    if (die) {
+	        hit = false;
+	        playerAction = DEAD;
+	        if (aniIndex == 9) {
+	            die = false;
+	            dead = true;
+	        }
+	    }
+
+	    if (startAni != playerAction) {
+	        resetAniTick();
+	    }
 	}
+
 
 
 
@@ -208,7 +212,7 @@ public class Player extends Entity {
 	private void updatePos() {
 		moving = false;
 		float xSpeed = 0;
-		if(!attacking && !die && !dead) {
+		if(!die && !dead) {
 			if (jump)
 				jump();
 			if (left)
@@ -279,9 +283,11 @@ public class Player extends Entity {
 
 	public void changeHealth(int value) {
 		currentHealth += value;
-		hit=true;
-		if (currentHealth <= 0)
+		if(currentHealth>0)
+			hit=true;
+		if (currentHealth <= 0) {
 			currentHealth = 0;
+		}
 		else if (currentHealth >= maxHealth)
 			currentHealth = maxHealth;
 	}
