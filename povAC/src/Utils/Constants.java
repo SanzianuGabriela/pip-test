@@ -109,7 +109,7 @@ public class Constants {
 		public static final int GROUND = 4;
 		public static final int HIT = 5;
 		public static final int ATTACK = 4;
-		private static final int DEAD = 6;
+		public static final int DEAD = 6;
 
 		public static int GetSpriteAmount(int player_action) {
 			switch (player_action) {
