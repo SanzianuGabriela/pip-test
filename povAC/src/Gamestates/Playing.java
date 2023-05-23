@@ -66,16 +66,19 @@ public class Playing extends State implements StateMethods {
 	@Override
 	public void update() {
 		
-		if (!paused && !gameOver) {
+		if (paused) {
+			pauseOverlay.update();
+		;
+		} else if (gameOver) {
+			gameOverOverlay.update();
+		} else {
 			levelManager.update();
+			
 			player.update();
 			enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			checkCloseToBorder();
-		} else
-			pauseOverlay.update();
-
+		}
 	}
-
 	private void checkCloseToBorder() {
 		int playerX = (int) player.getHitbox().x;
 		int diff = playerX - xLvlOffset;
@@ -177,24 +180,33 @@ public class Playing extends State implements StateMethods {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (!gameOver)
-			if (paused)
+			{if (paused)
 				pauseOverlay.mousePressed(e);
+			}
+		else
+			gameOverOverlay.mousePressed(e);
 
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (!gameOver)
-			if (paused)
+			{if (paused)
 				pauseOverlay.mouseReleased(e);
+			}
+		else
+			gameOverOverlay.mouseReleased(e);
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (!gameOver)
-			if (paused)
+			{if (paused)
 				pauseOverlay.mouseMoved(e);
+			}
+		else
+			gameOverOverlay.mouseMoved(e);
 
 	}
 

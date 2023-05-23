@@ -26,6 +26,8 @@ public class LoadSave {
 	public static final String PLAYING_BIG_IMG = "resources/nor1.png";
 	public static final String STATUS_BAR = "resources/health_power_bar.png";
 	public static final String MENU_BACKGROUND_IMG = "resources/new_menu_background.png";
+	public static final String DEAD = "resources/death_screen.png";
+
 
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
