@@ -39,7 +39,7 @@ public class Playing extends State implements StateMethods {
 	private int maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
 	private int maxLvlOffsetX = maxTilesOffset * Game.TILES_SIZE;
 	
-	private BufferedImage backgroundImg;
+	private BufferedImage backgroundImg,backgroundImg2;
 
 	private Random rnd = new Random();
 	private boolean gameOver;
@@ -50,7 +50,7 @@ public class Playing extends State implements StateMethods {
 
 		backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BIG_IMG);
 		
-		//backgroundImg = LoadSave.GetSpriteAtlas(LoadSave.BACKGROUND);
+		backgroundImg2 = LoadSave.GetSpriteAtlas(LoadSave.BACKGROUND);
 	}
 
 	private void initClasses() {
@@ -93,8 +93,13 @@ public class Playing extends State implements StateMethods {
 	}
 	@Override
 	public void draw(Graphics g) {
-		//g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-		g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+		
+		for(int i=0; i<3; i++) {
+			g.drawImage(backgroundImg, 0+i*(int) (Game.GAME_WIDTH/1.5) - (int)(xLvlOffset * 0.3), 0, (int) (Game.GAME_WIDTH/1.5), (int) ( Game.GAME_HEIGHT/1.1), null);
+		}
+		
+		g.drawImage(backgroundImg2, 0 - (int)(xLvlOffset * 0.5), 0, (int) (Game.GAME_WIDTH*10), (int) ( Game.GAME_HEIGHT/1.05), null);
+		
 		levelManager.draw(g, xLvlOffset);
 		player.render(g,xLvlOffset);
 		enemyManager.draw(g,xLvlOffset);
