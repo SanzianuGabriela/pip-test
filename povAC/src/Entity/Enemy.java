@@ -32,7 +32,7 @@ public abstract class Enemy extends Entity {
 		this.enemyType = enemyType;
 		initHitbox(x, y, width, height);
 		maxHealth = GetMaxHealth(enemyType);
-		currentHealth = 50;
+		currentHealth = 30;
 
 	}
 
@@ -62,7 +62,7 @@ public abstract class Enemy extends Entity {
 		else
 			xSpeed = walkSpeed;
 
-		if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData))
+		if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData) && enemyState!=HIT)
 			if (IsFloor(hitbox, xSpeed, lvlData)) {
 				hitbox.x += xSpeed;
 				return;

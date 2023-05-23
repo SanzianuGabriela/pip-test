@@ -121,7 +121,7 @@ public class Player extends Entity {
 	public void render(Graphics g, int lvlOffset) {
 		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
 		//drawHitbox(g,0);
-		//drawAttackBox(g);
+		drawAttackBox(g);
 		drawUI(g);
 	}
 
@@ -168,6 +168,7 @@ public class Player extends Entity {
 	    }
 
 	    if (inAir) {
+	    	System.out.println(airSpeed);
 	        if (airSpeed < 0) {
 	            playerAction = JUMP;
 	        } else {
@@ -216,9 +217,10 @@ public class Player extends Entity {
 			if (jump)
 				jump();
 			if (left)
-			{xSpeed -= playerSpeed;
-			flipX = width;
-			flipW = -1;}
+			{	
+				xSpeed -= playerSpeed;
+				flipX = width;
+				flipW = -1;}
 
 			if (right)
 			{
