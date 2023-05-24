@@ -21,7 +21,7 @@ public abstract class Enemy extends Entity {
 	protected float walkSpeed = 0.55f * Game.SCALE;
 	protected int walkDir = Utils.Constants.Directions.LEFT;
 	protected int tileY;
-	protected float attackDistance = Game.TILES_SIZE;
+	protected float attackDistance = 2*Game.TILES_SIZE;
 	protected int maxHealth;
 	protected int currentHealth;
 	protected boolean active = true;
@@ -32,7 +32,7 @@ public abstract class Enemy extends Entity {
 		this.enemyType = enemyType;
 		initHitbox(x, y, width, height);
 		maxHealth = GetMaxHealth(enemyType);
-		currentHealth = 30;
+		currentHealth = maxHealth;
 
 	}
 
@@ -48,8 +48,12 @@ public abstract class Enemy extends Entity {
 			fallSpeed += gravity;
 		} else {
 			inAir = false;
-			hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,1);
-			tileY = (int) (hitbox.y / Game.TILES_SIZE);
+			if(enemyType==DOG) {
+				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,1);
+				tileY = (int) (hitbox.y / Game.TILES_SIZE);}
+			if(enemyType==BOSS) {
+				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,3);
+				tileY = (int) (hitbox.y / Game.TILES_SIZE)+2;}
 		}
 	}
 
@@ -122,7 +126,7 @@ public abstract class Enemy extends Entity {
 	// Changed the name from "checkEnemyHit" to checkPlayerHit
 	protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
 		if (attackBox.intersects(player.hitbox))
-			player.changeHealth(-GetEnemyDmg(enemyType));
+			player.changeHealth(GetEnemyDmg(enemyType));
 		attackChecked = true;
 
 	}

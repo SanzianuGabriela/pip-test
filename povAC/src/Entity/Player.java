@@ -54,7 +54,7 @@ public class Player extends Entity {
 	private int healthWidth = healthBarWidth;
 	
 	//Water dmg
-	private int waterCooldown = 30;
+	private int waterCooldown = 60;
 	private int waterCooldownCounter = 0;
 
 
