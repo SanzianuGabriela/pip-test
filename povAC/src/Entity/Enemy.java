@@ -18,7 +18,7 @@ public abstract class Enemy extends Entity {
 	protected boolean inAir;
 	protected float fallSpeed;
 	protected float gravity = 0.04f * Game.SCALE;
-	protected float walkSpeed = 0.35f * Game.SCALE;
+	protected float walkSpeed = 0.55f * Game.SCALE;
 	protected int walkDir = Utils.Constants.Directions.LEFT;
 	protected int tileY;
 	protected float attackDistance = Game.TILES_SIZE;
@@ -48,7 +48,7 @@ public abstract class Enemy extends Entity {
 			fallSpeed += gravity;
 		} else {
 			inAir = false;
-			hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed);
+			hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,1);
 			tileY = (int) (hitbox.y / Game.TILES_SIZE);
 		}
 	}
@@ -82,7 +82,7 @@ public abstract class Enemy extends Entity {
 
 
 	protected boolean canSeePlayer(int[][] lvlData, Player player) {
-		int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE);
+		int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE)+1;
 		if (playerTileY == tileY)
 			if (isPlayerInRange(player)) {
 				if (IsSightClear(lvlData, hitbox, player.hitbox, tileY))

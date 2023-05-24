@@ -34,6 +34,7 @@ public class EnemyManager {
 
 	public void draw(Graphics g, int xLvlOffset) {
 		drawDogs(g, xLvlOffset);
+		
 	}
 
 	private void drawDogs(Graphics g, int xLvlOffset) {
@@ -41,7 +42,9 @@ public class EnemyManager {
 			if (c.isActive()) {
 				g.drawImage(dogArr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitbox().x - xLvlOffset - DOG_DRAWOFFSET_X + c.flipX(), (int) c.getHitbox().y - DOG_DRAWOFFSET_Y,
 						DOG_WIDTH * c.flipW(), DOG_HEIGHT, null);
+				//c.drawAttackBox(g, xLvlOffset); 
 			}
+		
 	}
 
 

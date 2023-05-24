@@ -12,7 +12,7 @@ import Utils.HelpMethods.*;
 import Entity.Enemy;
 public class Dog extends Enemy {
 	
-	private static final int ATTACK_COOLDOWN = 60;
+	private static final int ATTACK_COOLDOWN = 40;
     private int attackCooldown;
 
 	
@@ -22,12 +22,12 @@ public class Dog extends Enemy {
 	public Dog(float x, float y) {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT, DOG);
 		initHitbox(x, y, (int) (22 * Game.SCALE), (int) (19 * Game.SCALE));
-		attackCooldown = 0;
+		attackCooldown = 20;
 
 	}
 
 	private void initAttackBox() {
-		attackBox = new Rectangle2D.Float(x, y, (int) (82 * Game.SCALE), (int) (19 * Game.SCALE));
+		attackBox = new Rectangle2D.Float(x, y, (int) (55 * Game.SCALE), (int) (30 * Game.SCALE));
 		attackBoxOffsetX = (int) (Game.SCALE * 30);
 	}
 
@@ -40,8 +40,11 @@ public class Dog extends Enemy {
 
 	private void updateAttackBox() {
 		initAttackBox();
-		attackBox.x = hitbox.x - attackBoxOffsetX;
-		attackBox.y = hitbox.y;
+		if(walkDir == RIGHT)
+			attackBox.x = hitbox.x - attackBoxOffsetX +30*Game.SCALE;
+		else
+			attackBox.x = hitbox.x - attackBoxOffsetX -10*Game.SCALE;
+		attackBox.y = hitbox.y-5*Game.SCALE;
 
 	}
 

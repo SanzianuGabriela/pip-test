@@ -24,9 +24,11 @@ public class Player extends Entity {
 	private float playerSpeed = 1.0f * Game.SCALE;
 	private int[][] lvlData;
 	private float xDrawOffset = 32 * Game.SCALE;
-	private float yDrawOffset = 60 * Game.SCALE;
+	private float yDrawOffset = 32 * Game.SCALE;
 
 	// Jumping / Gravity
+	private int jumpCooldown = 150;
+	private int jumpCooldownCounter = 0;
 	private float airSpeed = 0f;
 	private float gravity = 0.04f * Game.SCALE;
 	private float jumpSpeed = -2.25f * Game.SCALE;
@@ -66,7 +68,7 @@ public class Player extends Entity {
 		super(x, y, width, height);
 		this.playing = playing;
 		loadAnimations();
-		initHitbox(x, y, (int) (32 * Game.SCALE), (int) (27* Game.SCALE));
+		initHitbox(x, y, (int) (32 * Game.SCALE), (int) (60* Game.SCALE));
 		initAttackBox();
 	}
 
@@ -109,7 +111,7 @@ public class Player extends Entity {
 		else if (left)
 			attackBox.x = hitbox.x - hitbox.width/2 - 15*Game.SCALE;
 
-		attackBox.y = hitbox.y - (Game.SCALE * 5);
+		attackBox.y = hitbox.y + (Game.SCALE * 15);
 	}
 
 	private void updateHealthBar() {
@@ -120,7 +122,7 @@ public class Player extends Entity {
 
 	public void render(Graphics g, int lvlOffset) {
 		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
-		//drawHitbox(g,0);
+		drawHitbox(g,0);
 		drawAttackBox(g);
 		drawUI(g);
 	}
@@ -168,7 +170,6 @@ public class Player extends Entity {
 	    }
 
 	    if (inAir) {
-	    	System.out.println(airSpeed);
 	        if (airSpeed < 0) {
 	            playerAction = JUMP;
 	        } else {
@@ -214,8 +215,16 @@ public class Player extends Entity {
 		moving = false;
 		float xSpeed = 0;
 		if(!die && !dead) {
-			if (jump)
-				jump();
+			if (jump) {
+		        if (!inAir && jumpCooldownCounter <= 0) {
+		            jump();
+		            jumpCooldownCounter = jumpCooldown;
+		        }
+		    }
+
+		    if (jumpCooldownCounter > 0) {
+		        jumpCooldownCounter--;
+		    }
 			if (left)
 			{	
 				xSpeed -= playerSpeed;
@@ -245,7 +254,7 @@ public class Player extends Entity {
 				airSpeed += gravity;
 				updateXPos(xSpeed);
 			} else {
-				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed,2);
 				if (airSpeed > 0)
 					resetInAir();
 				else
