@@ -15,7 +15,7 @@ public class LoadSave {
 	public static final String BACKGROUND="resources/rsz_1cladiri-fara-fundal.png";
 	public static final String PLAYER_ATLAS = "resources/assets6.png";
 	public static final String LEVEL_ATLAS = "resources/outside_sprites.png";
-	public static final String LEVEL_ONE_DATA = "resources/2-4.png";
+	public static final String LEVEL_ONE_DATA = "resources/2-14.png";
 	public static final String MENU_BUTTONS = "resources/button_atlas.png";
 	public static final String MENU_BACKGROUND = "resources/menu_background.png";
 	public static final String PAUSE_BACKGROUND = "resources/pause_menu.png";
@@ -71,7 +71,7 @@ public class LoadSave {
 			for (int i = 0; i < img.getWidth(); i++) {
 				Color color = new Color(img.getRGB(i, j));
 				int value = color.getRed();
-				if (value >= 48)
+				if (value >= 49)
 					value = 0;
 				lvlData[j][i] = value;
 			}

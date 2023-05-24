@@ -52,6 +52,10 @@ public class Player extends Entity {
 	private int maxHealth = 50;
 	private int currentHealth = maxHealth;
 	private int healthWidth = healthBarWidth;
+	
+	//Water dmg
+	private int waterCooldown = 30;
+	private int waterCooldownCounter = 0;
 
 
 	//AttackBox
@@ -78,7 +82,13 @@ public class Player extends Entity {
 
 	public void update() {
 		updateHealthBar();
-
+		if(IsEntityInWater(hitbox,lvlData)) {
+			waterCooldownCounter++;
+			if(waterCooldownCounter>=waterCooldown) {
+				waterCooldownCounter=0;
+				changeHealth(1);
+			}
+		}
 		if (currentHealth <= 0) {
 			die=true;
 		}
@@ -293,7 +303,7 @@ public class Player extends Entity {
 
 
 	public void changeHealth(int value) {
-		currentHealth += value;
+		currentHealth -= value;
 		if(currentHealth>0)
 			hit=true;
 		if (currentHealth <= 0) {
