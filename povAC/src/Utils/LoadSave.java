@@ -15,7 +15,7 @@ public class LoadSave {
 	public static final String BACKGROUND="resources/rsz_1cladiri-fara-fundal.png";
 	public static final String PLAYER_ATLAS = "resources/assets6.png";
 	public static final String LEVEL_ATLAS = "resources/outside_sprites.png";
-	public static final String LEVEL_ONE_DATA = "resources/lvl_1.png";
+	public static final String LEVEL_ONE_DATA = "resources/2-4.png";
 	public static final String MENU_BUTTONS = "resources/button_atlas.png";
 	public static final String MENU_BACKGROUND = "resources/menu_background.png";
 	public static final String PAUSE_BACKGROUND = "resources/pause_menu.png";
@@ -26,7 +26,10 @@ public class LoadSave {
 	public static final String PLAYING_BIG_IMG = "resources/nor1.png";
 	public static final String STATUS_BAR = "resources/health_power_bar.png";
 	public static final String MENU_BACKGROUND_IMG = "resources/background_menu.png";
+	public static final String WATER_TOP = "resources/water_atlas_animation.png";
+	public static final String WATER_BOTTOM = "resources/water.png";
 
+	
 	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
 		InputStream is = LoadSave.class.getResourceAsStream("/" + fileName);
