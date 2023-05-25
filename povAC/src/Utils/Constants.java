@@ -57,7 +57,7 @@ public class Constants {
 				case IDLE:
 					return 6;
 				case RUNNING:
-					return 8;
+					return 9;
 				case ATTACK:
 					return 8;
 				case HIT:

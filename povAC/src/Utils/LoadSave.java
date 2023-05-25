@@ -16,7 +16,7 @@ import main.Game;
 
 public class LoadSave {
 	public static final String BACKGROUND="resources/rsz_1cladiri-fara-fundal.png";
-	public static final String PLAYER_ATLAS = "resources/assets7.png";
+	public static final String PLAYER_ATLAS = "resources/Assets_F.png";
 	public static final String LEVEL_ATLAS = "resources/outside_sprites.png";
 	public static final String LEVEL_ONE_DATA = "resources/BOSS_TEST.png";
 	public static final String MENU_BUTTONS = "resources/button_atlas.png";
