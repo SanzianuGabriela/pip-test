@@ -19,8 +19,8 @@ public class Constants {
 		public static final int DOG_WIDTH_DEFAULT = 70;
 		public static final int DOG_HEIGHT_DEFAULT = 40;
 		//Boss
-		public static final int BOSS_WIDTH_DEFAULT = 96;
-		public static final int BOSS_HEIGHT_DEFAULT = 96;
+		public static final int BOSS_WIDTH_DEFAULT = 130;
+		public static final int BOSS_HEIGHT_DEFAULT = 130;
 		
 		//dog
 		public static final int DOG_WIDTH = (int) (DOG_WIDTH_DEFAULT * Game.SCALE);
@@ -30,11 +30,11 @@ public class Constants {
 		public static final int BOSS_HEIGHT = (int) (BOSS_HEIGHT_DEFAULT * Game.SCALE);
 		
 		//DOG
-		public static final int DOG_DRAWOFFSET_X = (int) (26 * Game.SCALE);
+		public static final int DOG_DRAWOFFSET_X = (int) (15 * Game.SCALE);
 		public static final int DOG_DRAWOFFSET_Y = (int) (9 * Game.SCALE);
 		//BOSS
-		public static final int BOSS_DRAWOFFSET_X = (int) (-72 * Game.SCALE);
-		public static final int BOSS_DRAWOFFSET_Y = (int) (48 * Game.SCALE);
+		public static final int BOSS_DRAWOFFSET_X = (int) (-112 * Game.SCALE);
+		public static final int BOSS_DRAWOFFSET_Y = (int) (96 * Game.SCALE);
 
 		public static int GetSpriteAmount(int enemy_type, int enemy_state) {
 
@@ -76,7 +76,7 @@ public class Constants {
 			case DOG:
 				return 30;
 			case BOSS:
-				return 200;
+				return 100;
 			default:
 				return 1;
 			}
@@ -85,7 +85,7 @@ public class Constants {
 		public static int GetEnemyDmg(int enemy_type) {
 			switch (enemy_type) {
 			case DOG:
-				return 15;
+				return 10;
 			case BOSS:
 				return 30;
 			default:

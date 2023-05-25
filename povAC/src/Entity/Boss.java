@@ -12,7 +12,7 @@ import Utils.HelpMethods.*;
 import Entity.Enemy;
 public class Boss extends Enemy {
 	
-	private static final int ATTACK_COOLDOWN = 40;
+	private static final int ATTACK_COOLDOWN = 240;
     private int attackCooldown;
 
 	
@@ -22,12 +22,12 @@ public class Boss extends Enemy {
 	public Boss(float x, float y) {
 		super(x, y, BOSS_WIDTH, BOSS_HEIGHT, BOSS);
 		initHitbox(x, y, (int) (48 * Game.SCALE), (int) (90 * Game.SCALE));
-		attackCooldown = 20;
+		attackCooldown = 0;
 
 	}
 
 	private void initAttackBox() {
-		attackBox = new Rectangle2D.Float(x, y, (int) (55 * Game.SCALE), (int) (30 * Game.SCALE));
+		attackBox = new Rectangle2D.Float(x, y, (int) (55 * Game.SCALE), (int) (70 * Game.SCALE));
 		attackBoxOffsetX = (int) (Game.SCALE * 30);
 	}
 
@@ -42,10 +42,10 @@ public class Boss extends Enemy {
 	private void updateAttackBox() {
 		initAttackBox();
 		if(walkDir == RIGHT)
-			attackBox.x = hitbox.x - attackBoxOffsetX +30*Game.SCALE;
+			attackBox.x = hitbox.x - attackBoxOffsetX +50*Game.SCALE;
 		else
 			attackBox.x = hitbox.x - attackBoxOffsetX -10*Game.SCALE;
-		attackBox.y = hitbox.y-5*Game.SCALE;
+		attackBox.y = hitbox.y+10*Game.SCALE;
 
 	}
 
@@ -58,13 +58,18 @@ public class Boss extends Enemy {
 		else {
 			switch (enemyState) {
 			case IDLE:
-				if(canSeePlayer(lvlData, player))
+				if(canSeePlayer(lvlData, player,BOSS) && !isPlayerCloseForAttack(player,BOSS))
 					newState(RUNNING);
+				else if (isPlayerCloseForAttack(player,BOSS) && attackCooldown <= 0)
+					newState(ATTACK);
+				else
+					attackCooldown--;
 				break;
 			case RUNNING:
-				if (canSeePlayer(lvlData, player)) {
+				attackCooldown--;
+				if (canSeePlayer(lvlData, player,BOSS)) {
 					turnTowardsPlayer(player);
-					if (isPlayerCloseForAttack(player))
+					if (isPlayerCloseForAttack(player,BOSS) && attackCooldown <= 0)
 						newState(ATTACK);
 				}
 				else
@@ -75,16 +80,14 @@ public class Boss extends Enemy {
 				if (aniIndex == 0)
 					attackChecked = false;
 
-				if (aniIndex == 3 && !attackChecked && attackCooldown <= 0) {
+				if (aniIndex == 3 && !attackChecked) {
 	                checkPlayerHit(attackBox, player);
 	                attackCooldown = ATTACK_COOLDOWN;
-	            } else {
-	                attackCooldown--;
-	                
 	            }
 
 	            break;
 			case HIT:
+				attackCooldown--;
 				break;
 			}
 		}
@@ -98,7 +101,7 @@ public class Boss extends Enemy {
 
 	public int flipX() {
 		if (walkDir == RIGHT)
-			return -width;
+			return (int) -(width+48*Game.SCALE);
 		else
 			return 0;
 	}

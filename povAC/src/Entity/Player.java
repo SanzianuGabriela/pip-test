@@ -21,7 +21,7 @@ public class Player extends Entity {
 	private int direction=RIGHT;
 	private boolean moving = false, attacking = false ,hit=false,die=false,dead=false;
 	private boolean left, up, right, down, jump;
-	private float playerSpeed = 1.0f * Game.SCALE;
+	private float playerSpeed = 0.9f * Game.SCALE;
 	private int[][] lvlData;
 	private float xDrawOffset = 32 * Game.SCALE;
 	private float yDrawOffset = 32 * Game.SCALE;
@@ -132,8 +132,8 @@ public class Player extends Entity {
 
 	public void render(Graphics g, int lvlOffset) {
 		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset + flipX, (int) (hitbox.y - yDrawOffset), width * flipW, height, null);
-		drawHitbox(g,0);
-		drawAttackBox(g);
+		//drawHitbox(g,0);
+		//drawAttackBox(g);
 		drawUI(g);
 	}
 

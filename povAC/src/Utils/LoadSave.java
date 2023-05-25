@@ -16,17 +16,17 @@ import main.Game;
 
 public class LoadSave {
 	public static final String BACKGROUND="resources/rsz_1cladiri-fara-fundal.png";
-	public static final String PLAYER_ATLAS = "resources/assets6.png";
+	public static final String PLAYER_ATLAS = "resources/assets7.png";
 	public static final String LEVEL_ATLAS = "resources/outside_sprites.png";
-	public static final String LEVEL_ONE_DATA = "resources/2-17.png";
+	public static final String LEVEL_ONE_DATA = "resources/BOSS_TEST.png";
 	public static final String MENU_BUTTONS = "resources/button_atlas.png";
 	public static final String MENU_BACKGROUND = "resources/menu_background.png";
 	public static final String PAUSE_BACKGROUND = "resources/pause_menu.png";
 	public static final String SOUND_BUTTONS = "resources/sound_button.png";
 	public static final String URM_BUTTONS = "resources/urm_buttons.png";
 	public static final String VOLUME_BUTTONS = "resources/volume_buttons.png";
-	public static final String DOG_SPRITE = "resources/caine.png";
-	public static final String BOSS_SPRITE = "resources/Boss2.png";
+	public static final String DOG_SPRITE = "resources/caine2.png";
+	public static final String BOSS_SPRITE = "resources/BOSS_F.png";
 	public static final String PLAYING_BIG_IMG = "resources/nor1.png";
 	public static final String STATUS_BAR = "resources/health_power_bar.png";
 	public static final String MENU_BACKGROUND_IMG = "resources/background_menu.png";
