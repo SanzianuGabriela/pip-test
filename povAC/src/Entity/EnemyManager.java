@@ -59,6 +59,7 @@ public class EnemyManager {
 				g.drawImage(bossArr[c.getEnemyState()][c.getAniIndex()], (int) c.getHitbox().x - xLvlOffset - BOSS_DRAWOFFSET_X + c.flipX(), (int) c.getHitbox().y - BOSS_DRAWOFFSET_Y,
 						(int)((BOSS_WIDTH * c.flipW())*1.5), (int)(BOSS_HEIGHT*1.5), null);
 				c.drawHitbox(g, xLvlOffset); 
+				c.drawAttackBox(g, xLvlOffset);
 			}
 	}
 
