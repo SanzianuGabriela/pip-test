@@ -32,7 +32,7 @@ public abstract class Enemy extends Entity {
 		this.enemyType = enemyType;
 		initHitbox(x, y, width, height);
 		maxHealth = GetMaxHealth(enemyType);
-		currentHealth = 30;
+		currentHealth = maxHealth;
 
 	}
 
@@ -48,15 +48,22 @@ public abstract class Enemy extends Entity {
 			fallSpeed += gravity;
 		} else {
 			inAir = false;
-			hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,1);
-			tileY = (int) (hitbox.y / Game.TILES_SIZE);
+			if(enemyType==DOG) {
+				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,1);
+				tileY = (int) (hitbox.y / Game.TILES_SIZE);}
+			if(enemyType==BOSS) {
+				hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, fallSpeed,3);
+				tileY = (int) (hitbox.y / Game.TILES_SIZE)+2;}
 		}
 	}
 
 
 	protected void move(int[][] lvlData) {
 		float xSpeed = 0;
-
+		if(enemyType==BOSS)
+			walkSpeed=0.40f * Game.SCALE;
+		else
+			walkSpeed=0.55f * Game.SCALE;
 		if (walkDir == LEFT)
 			xSpeed = -walkSpeed;
 		else
@@ -81,10 +88,10 @@ public abstract class Enemy extends Entity {
 	}
 
 
-	protected boolean canSeePlayer(int[][] lvlData, Player player) {
+	protected boolean canSeePlayer(int[][] lvlData, Player player,int enemyType) {
 		int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE)+1;
 		if (playerTileY == tileY)
-			if (isPlayerInRange(player)) {
+			if (isPlayerInRange(player,enemyType)) {
 				if (IsSightClear(lvlData, hitbox, player.hitbox, tileY))
 					return true;
 			}
@@ -93,15 +100,24 @@ public abstract class Enemy extends Entity {
 	}
 
 
-	protected boolean isPlayerInRange(Player player) {
+	protected boolean isPlayerInRange(Player player,int enemyType) {
 		int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
-		return absValue <= attackDistance * 5;
+		if(enemyType==BOSS)
+			return absValue <= attackDistance * 15;
+		if(enemyType==DOG)
+			return absValue <= attackDistance * 10;
+		return false;
+		
 	}
 
 
-	protected boolean isPlayerCloseForAttack(Player player) {
+	protected boolean isPlayerCloseForAttack(Player player,int enemyType) {
 		int absValue = (int) Math.abs(player.hitbox.x - hitbox.x);
-		return absValue <= attackDistance;
+		if(enemyType==BOSS)
+			return absValue <= attackDistance*1.5;
+		if(enemyType==DOG)
+			return absValue <= attackDistance;
+		return false;
 	}
 
 
@@ -111,12 +127,13 @@ public abstract class Enemy extends Entity {
 		aniIndex = 0;
 	}
 
-	public void hurt(int amount) {
+	public void hurt(int amount,boolean dead) {
 		currentHealth -= amount;
 		if (currentHealth <= 0)
 			newState(DEAD);
 		else
-			newState(HIT);
+			if(enemyState!=ATTACK)
+				newState(HIT);
 	}
 
 	// Changed the name from "checkEnemyHit" to checkPlayerHit

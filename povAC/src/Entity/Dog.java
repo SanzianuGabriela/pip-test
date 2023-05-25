@@ -21,13 +21,13 @@ public class Dog extends Enemy {
 
 	public Dog(float x, float y) {
 		super(x, y, DOG_WIDTH, DOG_HEIGHT, DOG);
-		initHitbox(x, y, (int) (22 * Game.SCALE), (int) (19 * Game.SCALE));
+		initHitbox(x, y, (int) (40 * Game.SCALE), (int) (30 * Game.SCALE));
 		attackCooldown = 20;
 
 	}
 
 	private void initAttackBox() {
-		attackBox = new Rectangle2D.Float(x, y, (int) (55 * Game.SCALE), (int) (30 * Game.SCALE));
+		attackBox = new Rectangle2D.Float(x, y, (int) (35 * Game.SCALE), (int) (20 * Game.SCALE));
 		attackBoxOffsetX = (int) (Game.SCALE * 30);
 	}
 
@@ -41,9 +41,9 @@ public class Dog extends Enemy {
 	private void updateAttackBox() {
 		initAttackBox();
 		if(walkDir == RIGHT)
-			attackBox.x = hitbox.x - attackBoxOffsetX +30*Game.SCALE;
+			attackBox.x = hitbox.x - attackBoxOffsetX +45*Game.SCALE;
 		else
-			attackBox.x = hitbox.x - attackBoxOffsetX -10*Game.SCALE;
+			attackBox.x = hitbox.x - attackBoxOffsetX +20*Game.SCALE;
 		attackBox.y = hitbox.y-5*Game.SCALE;
 
 	}
@@ -60,9 +60,9 @@ public class Dog extends Enemy {
 				newState(RUNNING);
 				break;
 			case RUNNING:
-				if (canSeePlayer(lvlData, player)) {
+				if (canSeePlayer(lvlData, player,DOG)) {
 					turnTowardsPlayer(player);
-					if (isPlayerCloseForAttack(player))
+					if (isPlayerCloseForAttack(player,DOG))
 						newState(ATTACK);
 				}
 				move(lvlData);
@@ -94,7 +94,7 @@ public class Dog extends Enemy {
 
 	public int flipX() {
 		if (walkDir == RIGHT)
-			return width;
+			return (int) (width);
 		else
 			return 0;
 	}
